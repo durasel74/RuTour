@@ -10,5 +10,39 @@ ol, ul, li, form, table, caption, tr, th, td, article, aside, footer, header {
 }
 
 body {
+    background-color: red;
+}
 
+.header {
+    height: 100px;
+    background-color: #CCC;
+}
+
+.wrapper {
+    padding: 20px;
+    background-color: #999;
+}
+
+.sidebar {
+    float: left;
+    width: 250px;
+    height: 500px;
+
+    background-color: #555;
+}
+
+.main {
+    margin-left: 270px;
+    height: 1000px;
+    background-color: #777;
+}
+
+.footer {
+    height: 300px;
+    background-color: #222;
+}
+
+.header .wrapper .footer {
+    max-width: 1200px;
+    margin: 0 auto;
 }
