@@ -30,9 +30,6 @@ body {
     background-color: #333;
 }
 
-.nav-content {
-}
-
 .nav ul {
     display: inline;
     max-width: 500px;
@@ -46,6 +43,7 @@ body {
 }
 .nav ul li:hover {
     background-color: #111;
+    cursor: pointer;
 }
 
 .user-name {
@@ -114,13 +112,47 @@ body {
 }
 
 .tour-card {
+    position: relative;
     border-radius: 6px;
     height: 200px;
     margin: 25px auto;
     background-color: #666;
+    overflow: hidden;
+}
+.tour-card:first-child {
+    margin-top: 5px;
+}
+
+.tour-image {
+    display: inline-block;
+    width: 250px;
+    height: 200px;
+}
+
+.tour-info {
+    display: inline-block;
+    position: absolute;
+    left: 260px;
+    right: 0;
+    top: 10px;
+    bottom: 0;
+    color: white;
+}
+
+.cost-button {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    padding: 25px 30px;
+    background-color: lightgreen;
 }
 
 .footer {
     height: 300px;
     background-color: #222;
+}
+
+.footer address {
+    padding: 50px;
+    color: white;
 }
