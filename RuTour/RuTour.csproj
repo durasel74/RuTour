@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\html\" />
+    <Content Include="_OLD\App_Data\TourDB.mdf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_OLD\css\styles.css" />
+    <Content Include="_OLD\images\header.jpg" />
+    <Content Include="_OLD\images\hotel.jpg" />
+    <Content Include="_OLD\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="_OLD\html\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
