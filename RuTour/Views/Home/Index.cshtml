@@ -1,31 +1,21 @@
-﻿@model IEnumerable<RuTour.Models.City>
+﻿@model IEnumerable<RuTour.Models.Country>
 @{
-    //ViewData["Title"] = "Список городов";
-    Layout = null;
+    ViewData["Title"] = "Список стран";
 }
 
-<!DOCTYPE html>
- 
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width">
-    <title>Города</title>
-</head>
-<body>
-    <h3>Города</h3>
-    <table>
+<h3>Страны</h3>
+<table>
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td></td>
+    </tr>
+    @foreach (var country in Model)
+    {
         <tr>
-            <td>Id</td>
-            <td>Name</td>
+            <td>@country.Id</td>
+            <td>@country.Name</td>
+            <td><a href="~/Home/Country/@country.Id">Перейти</a></td>
         </tr>
-        @foreach (var city in Model)
-            {
-            <tr>
-                <td>@city.Id</td>
-                <td>@city.Name</td>
-            </tr>
-        }
-    </table>
-</body>
-</html>
+    }
+</table>

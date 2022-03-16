@@ -1,0 +1,25 @@
+﻿@model IEnumerable<RuTour.Models.City>
+@{
+    ViewData["Title"] = "Список городов";
+}
+
+<h3>Информация о городах страны</h3>
+<form method="post">
+    <input type="hidden" value="@ViewBag.CountryId" name="CountryId" />
+    <table>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>CountryId</td>
+            <td></td>
+        </tr>
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.Id</td>
+                <td>@city.Name</td>
+                <td>@city.CountryId</td>
+            </tr>
+        }
+    </table>
+</form>

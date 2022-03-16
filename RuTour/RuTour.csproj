@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="_OLD\App_Data\TourDB.mdf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
     <Content Include="_OLD\css\styles.css" />
     <Content Include="_OLD\images\header.jpg" />
     <Content Include="_OLD\images\hotel.jpg" />
@@ -17,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\css\" />
     <Folder Include="_OLD\html\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
