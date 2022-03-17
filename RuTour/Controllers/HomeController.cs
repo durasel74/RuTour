@@ -17,6 +17,29 @@ namespace RuTour.Controllers
 		}
 
         [HttpGet]
+        public IActionResult Users()
+        {
+            return View(db.Users);
+        }
+
+        //[HttpGet]
+        //public IActionResult Users(int? id)
+        //{
+        //    if (id == null) return RedirectToAction("Index");
+        //    ViewBag.UserId = id;
+        //    return View(db.Users);
+        //}
+
+        [HttpGet]
+        public IActionResult Tours(int? id)
+        {
+            if (id == null) return RedirectToAction("Home/Users/");
+            ViewBag.TourId = id;
+            var user = db.Users.FirstOrDefault(user => user.Id == id);
+            return View(user);
+        }
+
+        [HttpGet]
         public IActionResult Country(int? id)
         {
             if (id == null) return RedirectToAction("Index");

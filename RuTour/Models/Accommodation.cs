@@ -10,6 +10,6 @@
 		public int CityId { get; set; }
 		public City City { get; set; }
 
-		public List<Tour> Tours { get; set; }
+		public List<Tour> Tours { get; set; } = new List<Tour>();
 	}
 }

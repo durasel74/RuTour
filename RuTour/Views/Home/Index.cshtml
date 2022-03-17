@@ -1,21 +1,6 @@
-﻿@model IEnumerable<RuTour.Models.Country>
-@{
-    ViewData["Title"] = "Список стран";
+﻿@{
+    ViewData["Title"] = "Главная";
 }
 
 <h3>Страны</h3>
-<table>
-    <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td></td>
-    </tr>
-    @foreach (var country in Model)
-    {
-        <tr>
-            <td>@country.Id</td>
-            <td>@country.Name</td>
-            <td><a href="~/Home/Country/@country.Id">Перейти</a></td>
-        </tr>
-    }
-</table>
+<a href="~/Home/Users/">Пользователи</a>

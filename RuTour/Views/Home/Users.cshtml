@@ -1,0 +1,27 @@
+﻿@model IEnumerable<RuTour.Models.User>
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<h3>Пользователи</h3>
+<form method="post">
+    <input type="hidden" value="@ViewBag.UserId" name="UserId" />
+    <a href="~/Home/">Назад</a>
+    <table>
+        <tr>
+            <td>Login</td>
+            <td>Email</td>
+            <td>PhoneNumber</td>
+            <td></td>
+        </tr>
+        @foreach (var element in Model)
+        {
+            <tr>
+                <td>@element.Login</td>
+                <td>@element.Email</td>
+                <td>@element.PhoneNumber</td>
+                <td><a href="~/Home/Tours/@element.Id">Вход</a></td>
+            </tr>
+        }
+    </table>
+</form>
