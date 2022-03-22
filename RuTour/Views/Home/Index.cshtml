@@ -1,6 +1,112 @@
-﻿@{
-    ViewData["Title"] = "Главная";
+﻿@model RuTour.Models.TourContext
+@{
+    ViewData["Title"] = "RuTour";
 }
 
-<h3>Страны</h3>
-<a href="~/Home/Users/">Пользователи</a>
+
+<section class="hero-area set-bg" data-setbg="img/manaraga-toned.jpg"
+         style="height: 650px; background-position-y: -50px;">
+</section>
+
+<section class="search-filter">
+    <div class="container" style="padding: 50px 20px; background-color: #00000099;">
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="#" class="d-md-flex justify-content-between" style="padding: 10px;">
+                    <h4 style="position: absolute; top: -30px; color: white;">Поиск</h4>
+                    <div>
+                        <h4 style="margin: 5px; color: white;">Город</h4>
+                        <input type="text" list="cities" style="border-radius: 5px; border: 0; height: 42px; padding: 0 10px;" />
+                        <datalist id="cities" style="border-radius: 5px; border: 0; height: 42px; padding: 0 15px;">
+                            @foreach (var element in Model.Cities)
+                            {
+                                <option>@element.Name</option>
+                            }
+                        </datalist>
+                    </div>
+
+                    <div>
+                        <h4 style="margin: 5px; color: white;">Дата</h4>
+                        <input type="date" style="border-radius: 5px; border: 0; height: 42px; padding: 0 15px;">
+                    </div>
+
+                    <div>
+                        <h4 style="margin: 5px; color: white;">Стоимость</h4>
+                        <input type="number" min="1" step="any"
+                               style="border-radius: 5px; border: 0; height: 42px; padding: 0 10px;" />
+                    </div>
+
+                    <div>
+                        <h4 style="margin: 5px; color: white;">Транспорт</h4>
+                        <input type="text" list="transport" style="border-radius: 5px; border: 0; height: 42px; padding: 0 10px;" />
+                        <datalist id="transport" style="border-radius: 5px; border: 0; height: 42px; padding: 0 15px;">
+                            @foreach (String transport in Model.Transports)
+                            {
+                                <option>@transport</option>
+                            }
+                        </datalist>
+                    </div>
+
+                    <button class="boxed-btn3" style="margin-top: 32px; height: 42px; width: 150px; line-height: 15px;"
+                            type="submit">
+                        Найти
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="job_listing_area" style="padding-top: 50px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="section_title">
+                    <h3>Список туров</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="job_lists">
+            <div class="row">
+                @foreach (var element in Model.Tours)
+                {
+                    <div class="col-lg-12 col-md-12">
+                        <div class="single_jobs white-bg d-flex justify-content-between">
+                            <div class="jobs_left d-flex align-items-center">
+                                <div class="jobs_conetent">
+                                    <a href="#">
+                                        <h4 style="font-size: 30px;">@element.Title</h4>
+                                    </a>
+                                    <div class="links_locat d-flex align-items-center" style="margin-top: 35px;">
+                                        <div class="location">
+                                            <p> <i class="fa fa-map-marker"></i>Город @element.City.Name</p>
+                                        </div>
+                                        <div class="location">
+                                            <p> <i class="fa fa-clock-o"></i>Дата @element.Date</p>
+                                        </div>
+                                        <div class="location">
+                                            <p> <i class="fa fa-clock-o"></i>Ночей @element.NightsCount</p>
+                                        </div>
+                                        <div class="location">
+                                            <p> <i class="fa fa-clock-o"></i>@element.TransportString</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jobs_right">
+                                <div class="apply_now">
+                                    <!-- <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a> -->
+                                <a href="job_details.html" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
+                                </div>
+                                <div class="date">
+                                    <p style="font-size: 16px;">Стоимость @element.Cost руб.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

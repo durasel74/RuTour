@@ -5,12 +5,27 @@ namespace RuTour.Models
 {
 	public class TourContext : DbContext
 	{
+		private List<String> transports = new List<String>();
+
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<City> Cities { get; set; }
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Accommodation> Accommodations { get; set; }
 		public DbSet<Tour> Tours { get; set; }
+
+		public List<String> Transports 
+		{ 
+			get 
+			{
+				if (transports.Count == 0)
+				{
+					foreach (Transport transport in Enum.GetValues(typeof(Transport)))
+						transports.Add(transport.ToStringRu());
+				}
+				return transports;
+			}
+		}
 
 		public TourContext(DbContextOptions<TourContext> options)
 			: base(options)
@@ -135,13 +150,21 @@ namespace RuTour.Models
 				Address = "Берег :(",
 				City = city5,
 			};
-			Accommodations.AddRange(accommodation1, accommodation2, accommodation3, accommodation4, accommodation5);
+			var accommodation7 = new Accommodation
+			{
+				Name = "Центральный",
+				Description = "Отель в центре города",
+				Address = "Ок 27",
+				City = city2,
+			};
+			Accommodations.AddRange(accommodation1, accommodation2, accommodation3, 
+			accommodation4, accommodation5, accommodation6, accommodation7);
 
 			var tour1 = new Tour
 			{
 				Title = "Тестовая поездка",
 				Description = "Пробный тур для проверки приложения",
-				MaxPeopleNumber = 10,
+				MaxTicketNumber = 10,
 				Date = DateTime.Parse("13.03.2002"),
 				NightsCount = 5,
 				Transport = Transport.Bus,
@@ -155,7 +178,7 @@ namespace RuTour.Models
 			{
 				Title = "Горная прогулка",
 				Description = "Пробный тур для проверки приложения",
-				MaxPeopleNumber = 4,
+				MaxTicketNumber = 4,
 				Date = DateTime.Parse("04.05.2022"),
 				NightsCount = 0,
 				Transport = Transport.Car,
@@ -169,7 +192,7 @@ namespace RuTour.Models
 			{
 				Title = "Экскурсия по Москве",
 				Description = "Пробный тур для проверки приложения (Москва)",
-				MaxPeopleNumber = 20,
+				MaxTicketNumber = 20,
 				Date = DateTime.Parse("26.06.2022"),
 				NightsCount = 1,
 				Transport = Transport.Bus,
@@ -183,7 +206,7 @@ namespace RuTour.Models
 			{
 				Title = "Отдых на море",
 				Description = "Пробный тур для проверки приложения (Перелет)",
-				MaxPeopleNumber = 50,
+				MaxTicketNumber = 50,
 				Date = DateTime.Parse("26.06.2022"),
 				NightsCount = 7,
 				Transport = Transport.Airplane,
@@ -193,7 +216,36 @@ namespace RuTour.Models
 				City = city5,
 				Accommodation = accommodation6
 			};
-			Tours.AddRange(tour1, tour2, tour3, tour4);
+			var tour5 = new Tour
+			{
+				Title = "Экскурсия по Екатиринбургу",
+				Description = "Пробный тур для проверки приложения (Поезд)",
+				MaxTicketNumber = 30,
+				Date = DateTime.Parse("01.04.2022"),
+				NightsCount = 1,
+				Transport = Transport.Train,
+				Return = true,
+				Cost = 3000,
+				Company = company2,
+				City = city2,
+				Accommodation = accommodation7
+			};
+
+			var tour6 = new Tour
+			{
+				Title = "Отдых на море",
+				Description = "Пробный тур для проверки приложения (Перелет)",
+				MaxTicketNumber = 50,
+				Date = DateTime.Parse("26.06.2022"),
+				NightsCount = 7,
+				Transport = Transport.Airplane,
+				Return = true,
+				Cost = 25000,
+				Company = company1,
+				City = city5,
+				Accommodation = accommodation6
+			};
+			Tours.AddRange(tour1, tour2, tour3, tour4, tour5);
 
 			user1.Tours.Add(tour1);
 			user1.Tours.Add(tour3);

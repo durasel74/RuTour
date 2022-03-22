@@ -8,10 +8,11 @@ namespace RuTour.Models
 		public int Id { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
-		public int MaxPeopleNumber { get; set; } 
+		public int MaxTicketNumber { get; set; } 
 		public DateTime Date { get; set; }
 		public int NightsCount { get; set; }
 		public Transport Transport { get; set; } = Transport.None;
+		public String TransportString { get { return Transport.ToStringRu(); } }
 		public bool Return { get; set; }
 		public decimal Cost { get; set; }
 

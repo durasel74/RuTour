@@ -1,29 +1,99 @@
 ﻿<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"]</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </head>
-    <body>
-        <!--меню-->
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="~/Home/Index" class="navbar-brand">Главная</a></li>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <style>
+        .single_jobs.white-bg.d-flex.justify-content-between {
+            border-radius: 10px;
+            box-shadow: 1px 1px 2px 1px #777;
+        }
+            .single_jobs.white-bg.d-flex.justify-content-between:hover {
+                box-shadow: 3px 3px 6px 3px #777;
+            }
+
+        .boxed-btn3 {
+            height: 70px;
+            line-height: 50px;
+        }
+    </style>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700,800,900&display=swap">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+    <header class="header-section" style="height: 100px;">
+        <div class="container-fluid">
+            <div class="inner-header">
+                <div class="logo" style="line-height: 40px;">
+                    <a href="~/Home/Index" style="font-size: 50px; color: white;">RuTour</a>
+                </div>
+                <div class="nav-right" style="margin-top: -2px">
+                    <a href="#" style="margin: 0 10px; color: white;">Вход</a>
+                    <a href="#" class="boxed-btn3" style="margin: 0 10px; height: 50px; line-height: 25px;">Регистрация</a>
+                </div>
+                <nav class="main-menu mobile-menu" style="margin-top: -10px">
+                    <ul>
+                        <li class="active"><a href="#" style="line-height: 60px; font-size: 20px;">Туры</a></li>
+                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Компании</a></li>
+                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Избранное</a></li>
+                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Личный кабинет</a></li>
+                        <li><a href="#" style="line-height: 60px; font-size: 20px;">О нас</a></li>
                     </ul>
+                </nav>
+                <div id="mobile-menu-wrap"></div>
+            </div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-item">
+                        <div class="footer-logo">
+                        </div>
+                        <p>Сайт по продаже туристических путевок</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-item">
+                        <h5 style="margin-bottom: 10px;">Контакты</h5>
+                        <a style="color: white;" href="https://github.com/durasel74">https://github.com/durasel74</a>
+                    </div>
                 </div>
             </div>
-        </nav>
-        <!--основной контент-->
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>© 2022 - RuTour</p>
-            </footer>
         </div>
-    </body>
+        <div class="copyright">
+        </div>
+    </footer>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
 </html>

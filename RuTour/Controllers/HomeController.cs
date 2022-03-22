@@ -13,7 +13,7 @@ namespace RuTour.Controllers
 
 		public IActionResult Index()
 		{
-			return View(db.Countries.ToList());
+			return View(db);
 		}
 
         [HttpGet]
