@@ -12,7 +12,6 @@ namespace RuTour.Models
 		public DateTime Date { get; set; }
 		public int NightsCount { get; set; }
 		public Transport Transport { get; set; } = Transport.None;
-		public String TransportString { get { return Transport.ToStringRu(); } }
 		public bool Return { get; set; }
 		public decimal Cost { get; set; }
 
@@ -26,5 +25,10 @@ namespace RuTour.Models
 		public Accommodation Accommodation { get; set; }
 
 		public List<User> Users { get; set; } = new List<User>();
+
+
+		public string TransportString { get { return Transport.ToStringRu(); } }
+		public string ReturnString { get { return Return ? "Есть" : "Нет"; } }
+		public int TicketsLeft { get { return MaxTicketNumber - Users.Count; } }
 	}
 }

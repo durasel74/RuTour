@@ -6,34 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
 
-    <style>
-        .single_jobs.white-bg.d-flex.justify-content-between {
-            border-radius: 10px;
-            box-shadow: 1px 1px 2px 1px #777;
-        }
-            .single_jobs.white-bg.d-flex.justify-content-between:hover {
-                box-shadow: 3px 3px 6px 3px #777;
-            }
-
-        .boxed-btn3 {
-            height: 70px;
-            line-height: 50px;
-        }
-    </style>
-
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700,800,900&display=swap">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
 </head>
 
 <body>
@@ -44,15 +29,20 @@
                     <a href="~/Home/Index" style="font-size: 50px; color: white;">RuTour</a>
                 </div>
                 <div class="nav-right" style="margin-top: -2px">
-                    <a href="#" style="margin: 0 10px; color: white;">Вход</a>
-                    <a href="#" class="boxed-btn3" style="margin: 0 10px; height: 50px; line-height: 25px;">Регистрация</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="~/Account/Logout" style="margin: 0 10px; color: white;">Выход</a>
+                    }
+                    else
+                    {
+                       <a href="~/Account/Login" style="margin: 0 10px; color: white;">Вход</a>
+                       <a href="~/Account/Register" class="boxed-btn3" style="margin: 0 10px; height: 50px; line-height: 25px;">Регистрация</a> 
+                    }
                 </div>
-                <nav class="main-menu mobile-menu" style="margin-top: -10px">
+                <nav class="main-menu" style="margin-top: -10px">
                     <ul>
-                        <li class="active"><a href="#" style="line-height: 60px; font-size: 20px;">Туры</a></li>
-                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Компании</a></li>
-                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Избранное</a></li>
-                        <li><a href="#" style="line-height: 60px; font-size: 20px;">Личный кабинет</a></li>
+                        <li class="active"><a href="~/Home/Index" style="line-height: 60px; font-size: 20px;">Туры</a></li>
+                        <li><a href="~/Account/User" style="line-height: 60px; font-size: 20px;">Личный кабинет</a></li>
                         <li><a href="#" style="line-height: 60px; font-size: 20px;">О нас</a></li>
                     </ul>
                 </nav>
@@ -95,5 +85,22 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+
+    <script>
+        $(function() {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 100000,
+                values: [1, 100000],
+                step: 100,
+                slide: function(event, ui) {
+                    $("#amount").val(ui.values[0] + " руб" + " - " + ui.values[1] + " руб");
+                }
+            });
+            $("#amount").val($("#slider-range").slider("values", 0) + " руб" +
+                " - " + $("#slider-range").slider("values", 1) + " руб");
+        });
+    </script>
 </body>
 </html>

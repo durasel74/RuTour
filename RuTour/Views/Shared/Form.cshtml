@@ -3,7 +3,7 @@
     ViewData["Title"] = "Список туров";
 }
 
-<h3>Туры пользователя @Model.Login</h3>
+<h3>Туры пользователя @Model.Email</h3>
 <form method="post">
     <input type="hidden" value="@ViewBag.TourId" name="UserId" />
     <a href="~/Home/Users/">Назад</a>

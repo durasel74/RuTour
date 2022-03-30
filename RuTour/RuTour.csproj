@@ -7,15 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="_OLD\css\styles.css" />
-    <Content Include="_OLD\images\header.jpg" />
-    <Content Include="_OLD\images\hotel.jpg" />
-    <Content Include="_OLD\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\css\" />
-    <Folder Include="_OLD\html\" />
   </ItemGroup>
 
   <ItemGroup>

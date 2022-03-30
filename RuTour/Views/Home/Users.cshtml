@@ -9,7 +9,6 @@
     <a href="~/Home/">Назад</a>
     <table>
         <tr>
-            <td>Login</td>
             <td>Email</td>
             <td>PhoneNumber</td>
             <td></td>
@@ -17,7 +16,6 @@
         @foreach (var element in Model)
         {
             <tr>
-                <td>@element.Login</td>
                 <td>@element.Email</td>
                 <td>@element.PhoneNumber</td>
                 <td><a href="~/Home/Tours/@element.Id">Вход</a></td>
