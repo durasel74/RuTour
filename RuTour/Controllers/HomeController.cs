@@ -17,6 +17,28 @@ namespace RuTour.Controllers
 			return View(db);
 		}
 
+		[HttpPost]
+		public IActionResult Index(string? city, string? company, DateTime? date, 
+			int? nights, string? transport, string? return_, int? max_cost)
+		{
+			db.ClearSearchList();
+			if (!String.IsNullOrEmpty(city))
+				db.SearchList = db.SearchList.Where(t => t.City.Name == city).ToList();
+			if (!String.IsNullOrEmpty(company))
+				db.SearchList = db.SearchList.Where(t => t.Company.Name == company).ToList();
+			if (date != null)
+				db.SearchList = db.SearchList.Where(t => t.Date == date).ToList();
+			if (nights != null)
+				db.SearchList = db.SearchList.Where(t => t.NightsCount == nights).ToList();
+			if (!String.IsNullOrEmpty(transport))
+				db.SearchList = db.SearchList.Where(t => t.TransportString == transport).ToList();
+			if (!String.IsNullOrEmpty(return_))
+				db.SearchList = db.SearchList.Where(t => t.ReturnString == return_).ToList();
+			if (max_cost != null)
+				db.SearchList = db.SearchList.Where(t => t.Cost <= max_cost).ToList();
+			return View(db);
+		}
+
 		[HttpGet]
 		public IActionResult Tour(int? id)
 		{
@@ -32,37 +54,5 @@ namespace RuTour.Controllers
 			var compnay = db.Companies.FirstOrDefault(compnay => compnay.Id == id);
 			return View(compnay);
 		}
-
-		
-
-		//[HttpGet]
-		//public IActionResult Users()
-		//{
-		//    return View(db.Users);
-		//}
-
-		//[HttpGet]
-		//public IActionResult Users(int? id)
-		//{
-		//    if (id == null) return RedirectToAction("Index");
-		//    ViewBag.UserId = id;
-		//    return View(db.Users);
-		//}
-
-
-
-		//[HttpGet]
-		//public IActionResult Country(int? id)
-		//{
-		//    if (id == null) return RedirectToAction("Index");
-		//    ViewBag.CountryId = id;
-		//    return View(db.Cities.Where(city => city.CountryId == id).ToList());
-		//}
-
-		//[HttpPost]
-		//public string Country(Country country)
-		//{
-		//    return "Выбран город: " + country.Name;
-		//}
 	}
 }

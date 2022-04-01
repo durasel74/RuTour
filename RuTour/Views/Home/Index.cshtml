@@ -3,20 +3,20 @@
     ViewData["Title"] = "RuTour";
 }
 
-<section class="hero-area set-bg" data-setbg="img/manaraga-toned.jpg"
-         style="height: 650px; background-position-y: -50px;">
-</section>
+<div class="hero-area" 
+    style="height: 650px; background-position-y: -50px;background-image: url(https://localhost:7295/img/manaraga-toned.jpg); background-size:cover">
+</div>
 
 <section class="search-filter">
     <div class="container" style="padding: 50px 20px; background-color: #00000099;">
         <div class="row">
             <div class="col-lg-12">
-                <form action="#" class="d-md-flex justify-content-between" style="padding: 10px;">
+                <form method="post" action="~/Home/Index" class="d-md-flex justify-content-between" style="padding: 10px;">
                     <h4 style="position: absolute; top: -30px; color: white;">Поиск</h4>
 
                     <div>
                         <h4 style="margin: 5px; color: white;">Город</h4>
-                        <input type="text" list="cities" style="border-radius: 5px; border: 0; height: 42px; padding: 0 10px;" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
+                        <input name="city" type="text" list="cities" style="border-radius: 5px; border: 0; height: 42px; padding: 0 10px;" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
                         <datalist id="cities">
                             @foreach (var element in Model.Cities)
                             {
@@ -27,18 +27,18 @@
 
                     <div>
                         <h4 style="margin: 5px; color: white;">Дата</h4>
-                        <input type="date" style="border-radius: 5px; border: 0; height: 42px; padding: 0 15px;">
+                        <input name="date" type="date" style="border-radius: 5px; border: 0; height: 42px; padding: 0 15px;">
                     </div>
 
                     <div class="single_field">
                         <h4 style="margin: 5px; color: white;">Количество ночей</h4>
-                        <input type="number" min="0" step="1" style="border-radius: 5px; border: 1px solid #444; height: 42px;
+                        <input name="nights" type="number" min="0" step="1" style="border-radius: 5px; border: 1px solid #444; height: 42px;
                                                 padding: 0 10px;" placeholder="Количество ночей" />
                     </div>
 
                     <div class="single_field">
                         <h4 style="margin: 5px; color: white;">Максимальная цена</h4>
-                        <input type="number" min="1" step="any" style="border-radius: 5px; border: 1px solid #444; height: 42px;
+                        <input name="max_cost" type="number" min="1" step="any" style="border-radius: 5px; border: 1px solid #444; height: 42px;
                                                 padding: 0 10px;" placeholder="Максимальная цена" />
                     </div>
 
@@ -57,7 +57,7 @@
                 <div class="job_filter white-bg" style="border-radius: 10px; box-shadow: 0px 0px 1px 0px #777;">
                     <div class="form_inner white-bg">
                         <h3>Фильтры</h3>
-                        <form action="#">
+                        <form method="post" action="~/Home/Index">
                             <div class="row">
 
                                 <div class="col-lg-12">
@@ -68,7 +68,7 @@
 
                                 <div class="col-lg-12">
                                     <div class="single_field">
-                                        <input type="text" list="cities" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
+                                        <input name="city" type="text" list="cities" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
                                         <datalist id="cities">
                                             @foreach (var element in Model.Cities)
                                             {
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div class="single_field">
-                                        <input type="text" list="companies" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" placeholder="Компания" onfocus="this.value='';" onchange="this.blur()" />
+                                        <input name="company" type="text" list="companies" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" placeholder="Компания" onfocus="this.value='';" onchange="this.blur()" />
                                         <datalist id="companies">
                                             @foreach (var element in Model.Companies)
                                             {
@@ -88,16 +88,16 @@
                                     </div>
 
                                     <div class="single_field">
-                                        <input type="date" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 15px;">
+                                        <input name="date" type="date" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 15px;">
                                     </div>
 
                                     <div class="single_field">
-                                        <input type="number" min="0" step="1" style="border-radius: 5px; border: 1px solid #888; height: 42px;
+                                        <input name="nights" type="number" min="0" step="1" style="border-radius: 5px; border: 1px solid #888; height: 42px;
                                                 padding: 0 10px;" placeholder="Количество ночей" />
                                     </div>
 
                                     <div class="single_field">
-                                        <input type="text" list="transport" style="border-radius: 5px; border: 1px solid #888; height: 42px;
+                                        <input name="transport" type="text" list="transport" style="border-radius: 5px; border: 1px solid #888; height: 42px;
                                                 padding: 0 10px;" placeholder="Транспорт" onfocus="this.value='';" onchange="this.blur()" />
                                         <datalist id="transport">
                                             @foreach (var element in Model.Transports)
@@ -108,7 +108,7 @@
                                     </div>
 
                                     <div class="single_field">
-                                        <input id="return_input" type="text" list="return-list" style="border-radius: 5px; border: 1px solid #888; height: 42px;
+                                        <input name="return_" id="return_input" type="text" list="return-list" style="border-radius: 5px; border: 1px solid #888; height: 42px;
                                                 padding: 0 10px;" placeholder="Билет обратно" onfocus="this.value='';" onchange="this.blur()" />
                                         <datalist id="return-list">
                                             <option>Нет</option>
@@ -159,7 +159,7 @@
                 <!-- Список туров -->
                 <div class="job_lists m-0">
                     <div class="row">
-                        @foreach (var element in Model.Tours)
+                        @foreach (var element in Model.SearchList)
                         {
                             <div class="col-lg-12 col-md-12">
                                 <div class="single_jobs white-bg d-flex justify-content-between">

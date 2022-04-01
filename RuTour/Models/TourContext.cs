@@ -6,6 +6,7 @@ namespace RuTour.Models
 	public class TourContext : DbContext
 	{
 		private List<String> transports = new List<String>();
+		private List<Tour> searchList = new List<Tour>();
 
 		public DbSet<Country> Countries { get; set; }
 		public DbSet<City> Cities { get; set; }
@@ -27,6 +28,8 @@ namespace RuTour.Models
 			}
 		}
 
+		public List<Tour> SearchList { get; set; }
+
 		public TourContext(DbContextOptions<TourContext> options)
 			: base(options)
 		{
@@ -39,6 +42,12 @@ namespace RuTour.Models
 			{
 				FillData();
 			}
+			SearchList = this.Tours.ToList();
+		}
+
+		public void ClearSearchList()
+		{
+			SearchList = this.Tours.ToList();
 		}
 
 		private void FillData()
