@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using RuTour.Models;
 
@@ -43,7 +44,7 @@ namespace RuTour.Controllers
 		public IActionResult Tour(int? id)
 		{
 			if (id == null) return RedirectToAction("Index");
-			var tour = db.Tours.FirstOrDefault(tour => tour.Id == id);
+			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).FirstOrDefault(tour => tour.Id == id);
 			return View(tour);
 		}
 
@@ -51,8 +52,8 @@ namespace RuTour.Controllers
 		public IActionResult Company(int? id)
 		{
 			if (id == null) return RedirectToAction("Index");
-			var compnay = db.Companies.FirstOrDefault(compnay => compnay.Id == id);
-			return View(compnay);
+			var company = db.Companies.Include(c => c.Tours).ThenInclude(t => t.City).FirstOrDefault(compnay => compnay.Id == id);
+			return View(company);
 		}
 	}
 }

@@ -33,28 +33,40 @@ namespace RuTour.Models
 		public TourContext(DbContextOptions<TourContext> options)
 			: base(options)
 		{
-			Database.EnsureDeleted();
+			// Database.EnsureDeleted();
 			Database.EnsureCreated();
 
-			if (!this.Countries.Any() && !this.Cities.Any()
-				&& !this.Companies.Any() && !this.Users.Any()
-				&& !this.Accommodations.Any() && !this.Tours.Any())
-			{
-				FillData();
-			}
-			SearchList = this.Tours.ToList();
+			AddDefaultCountries();
+			//if (!this.Users.Any()) AddAdmin();
+			//if (!this.Countries.Any() && !this.Cities.Any()
+			//	&& !this.Companies.Any() && !this.Accommodations.Any()
+			//	&& !this.Tours.Any())
+			//{
+			//	FillData();
+			//}
+			ClearSearchList();
 		}
 
 		public void ClearSearchList()
 		{
-			SearchList = this.Tours.ToList();
+			SearchList = this.Tours.Include(t => t.Company).Include(t => t.City).ToList();
+		}
+
+		private void AddDefaultCountries()
+		{
+			if (!this.Countries.Any())
+			{
+				var country1 = new Country { Name = "Россия" };
+				var country2 = new Country { Name = "Турция" };
+				Countries.AddRange(country1, country2);
+			}
 		}
 
 		private void FillData()
 		{
-			var country1 = new Country { Name = "Россия" };
-			var country2 = new Country { Name = "Турция" };
-			Countries.AddRange(country1, country2);
+			if (!this.Countries.Any()) AddDefaultCountries();
+			var country1 = Countries.First(c => c.Name == "Россия");
+			var country2 = Countries.First(c => c.Name == "Турция");
 
 			var city1 = new City
 			{
@@ -63,7 +75,7 @@ namespace RuTour.Models
 			};
 			var city2 = new City
 			{
-				Name = "Екатиринбург",
+				Name = "Екатеринбург",
 				Country = country1,
 			};
 			var city3 = new City
@@ -263,7 +275,7 @@ namespace RuTour.Models
 			};
 			var tour5 = new Tour
 			{
-				Title = "Экскурсия по Екатиринбургу",
+				Title = "Экскурсия по Екатеринбургу",
 				Description = "Пробный тур для проверки приложения (Поезд)" +
 				"Пробный тур для проверки приложения Пробный тур для проверки приложения Пробный тур для проверки приложения" +
 				"Пробный тур для проверки приложения Пробный тур для проверки приложения Пробный тур для проверки приложения" +
@@ -312,5 +324,17 @@ namespace RuTour.Models
 
 			this.SaveChanges();
 		}
+
+		private void AddAdmin()
+		{
+			var admin = new User
+			{
+				Email = "admin",
+				Password = "admin",
+			};
+			Users.AddRange(admin);
+			this.SaveChanges();
+		}
+
 	}
 }

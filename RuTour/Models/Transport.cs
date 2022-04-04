@@ -25,5 +25,19 @@
 				default: return "Нет";
 			}
 		}
+
+		public static Transport ToTransport(this Transport transport, string stringRu)
+		{
+			switch (stringRu)
+			{
+				case "Нет": return Transport.None;
+				case "Автобус": return Transport.Bus;
+				case "Самолет": return Transport.Airplane;
+				case "Поезд": return Transport.Train;
+				case "Корабль": return Transport.Ship;
+				case "Машина": return Transport.Car;
+				default: return Transport.None;
+			}
+		}
 	}
 }

@@ -9,8 +9,8 @@ namespace RuTour.Models
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public int MaxTicketNumber { get; set; } 
-		public DateTime Date { get; set; }
 		public int NightsCount { get; set; }
+		public DateTime Date { get; set; }
 		public Transport Transport { get; set; } = Transport.None;
 		public bool Return { get; set; }
 		public decimal Cost { get; set; }

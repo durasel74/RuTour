@@ -82,7 +82,8 @@ namespace RuTour.Controllers
         public IActionResult User()
         {
             var userName = HttpContext.User.Identity.Name;
-            User user = db.Users.FirstOrDefault(u => u.Email == userName);
+            User user = db.Users.Include(u => u.Tours).ThenInclude(t => t.City).FirstOrDefault(u => u.Email == userName);
+            user.DB = db;
             return View(user);
         }
 

@@ -11,8 +11,11 @@
                     <div class="job_content summery_header" style="margin-top: -20px">
                         <ul>
                             <li style="color: #555;">Почта: <span>@Model.Email</span></li>
-                            <li style="color: #555;">Номер телефона:
-                                <span>@if (Model.PhoneNumber != null)
+                            <li style="color: #555;">
+                                Номер телефона:
+                                <span>
+
+                                    @if (Model.PhoneNumber != null)
                                     {
                                         @Model.PhoneNumber
                                     }
@@ -20,7 +23,8 @@
                                     {
                                         @String.Empty
                                     }
-                                </span></li>
+                                </span>
+                            </li>
                         </ul>
                     </div>
                     <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
@@ -29,69 +33,258 @@
                 </div>
             </div>
 
+            <!-- Список туров -->
             <div class="container-fluid" style="margin-top: 40px">
-                <!-- Сортировка -->
-                <div class="recent_joblist_wrap">
-                    <div class="recent_joblist white-bg" style="background-color: transparent;">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <h4 style="font-size: 30px; margin-left: -20px;">Приобретенные туры</h4>
-                            </div>
-                            <div class="col-md-6" style="margin-bottom: -20px;">
-                                <div class="serch_cat d-flex justify-content-end" style="margin-right: -20px;">
-                                    <select style="border: 0; background-color: transparent;">
-                                        <option data-display="Most Recent">Сортировка</option>
-                                        <option value="1">По минимальной цене</option>
-                                        <option value="2">По максимальной цене </option>
-                                        <option value="3">По новизне </option>
-                                    </select>
+                @if (Model.Tours != null && Model.Tours.Count > 0)
+                {
+                    <!-- Сортировка -->
+                    <div class="recent_joblist_wrap">
+                        <div class="recent_joblist white-bg" style="background-color: transparent;">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h4 style="font-size: 30px; margin-left: -20px;">Приобретенные туры</h4>
+                                </div>
+                                <div class="col-md-6" style="margin-bottom: -20px;">
+                                    <div class="serch_cat d-flex justify-content-end" style="margin-right: -20px;">
+                                        <select style="border: 0; background-color: transparent;">
+                                            <option data-display="Most Recent">Сортировка</option>
+                                            <option value="1">По минимальной цене</option>
+                                            <option value="2">По максимальной цене </option>
+                                            <option value="3">По новизне </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Список туров -->
-                <div class="job_lists m-0">
-                    <div class="row">
-                        @foreach (var element in Model.Tours)
-                        {
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="single_jobs white-bg d-flex justify-content-between">
-                                                <div class="jobs_left d-flex align-items-center">
-                                                    <div class="jobs_conetent">
-                                                        <a href="~/Home/Tour/@element.Id">
-                                                            <h4 style="font-size: 30px;">@element.Title</h4>
-                                                        </a>
-                                                        <div class="links_locat d-flex align-items-center" style="margin-top: 35px;">
-                                                            <div class="location">
-                                                                <p> <i class="fa fa-map-marker"></i>Город @element.City.Name</p>
-                                                            </div>
-                                                            <div class="location">
-                                                                <p> <i class="fa fa-clock-o"></i>Дата @element.Date.ToShortDateString()</p>
-                                                            </div>
-                                                            <div class="location">
-                                                                <p> <i class="fa fa-clock-o"></i>Ночей @element.NightsCount</p>
-                                                            </div>
-                                                        </div>
+                    <!-- Туры -->
+                    <div class="job_lists m-0">
+                        <div class="row">
+                            @foreach (var element in Model.Tours)
+                            {
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="single_jobs white-bg d-flex justify-content-between">
+                                        <div class="jobs_left d-flex align-items-center">
+                                            <div class="jobs_conetent">
+                                                <a href="~/Home/Tour/@element.Id">
+                                                    <h4 style="font-size: 30px;">@element.Title</h4>
+                                                </a>
+                                                <div class="links_locat d-flex align-items-center" style="margin-top: 35px;">
+                                                    <div class="location">
+                                                        <p> <i class="fa fa-map-marker"></i>Город @element.City.Name</p>
                                                     </div>
-                                                </div>
-                                                <div class="jobs_right">
-                                                    <div class="apply_now">
-                                                        <a href="~/Home/Tour/@element.Id" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
+                                                    <div class="location">
+                                                        <p> <i class="fa fa-clock-o"></i>Дата @element.Date.ToShortDateString()</p>
                                                     </div>
-                                                    <div class="date">
-                                                        <p style="font-size: 16px;">Стоимость @element.Cost руб</p>
+                                                    <div class="location">
+                                                        <p> <i class="fa fa-clock-o"></i>Ночей @element.NightsCount</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                        }
+                                        <div class="jobs_right">
+                                            <div class="apply_now">
+                                                <a href="~/Home/Tour/@element.Id" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
+                                            </div>
+                                            <div class="date">
+                                                <p style="font-size: 16px;">Стоимость @element.Cost руб</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
-
+                }
             </div>
 
+            <!-- Админ панель -->
+            <div>
+                @if (Model.Email == "admin")
+                {
+                    <div class="container-fluid white-bg" style="margin-top: 40px; padding: 20px; border-radius: 10px">
+                        <!-- Создание Города -->
+                        <div style="margin: 15px 0; border: 1px solid #888">
+                            <h4 style="margin: 10px">Создание города</h4>
+                            <form action="~/Admin/AddCity" method="post">
+                                <div class="input_field" style="margin: 10px">
+                                    <input name="city_name" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Название города" onfocus="this.value=''">
+                                </div>
+                            
+                                <div class="input_field" style="margin: 10px">
+                                    <input name="country" type="text" list="countries" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" 
+                                    placeholder="Страна" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="countries">
+                                        @foreach (var element in Model.DB.Countries)
+                                        {
+                                            <option>@element.Name</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="reset_btn" style="margin: 10px">
+                                    <button class="boxed-btn3 w-100" style="height: 50px; line-height: 25px;" type="submit">Создать</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Создание места проживания -->
+                        <div style="margin: 15px 0; border: 1px solid #888">
+                            <h4 style="margin: 10px">Создание места проживания</h4>
+                            <form action="~/Admin/AddAccomodation" method="post">
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="accomodation_name" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Название" onfocus="this.value=''">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="accomodation_address" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Адрес" onfocus="this.value=''">
+                                </div>
+
+                                <div class="input_field" style="margin: 10px">
+                                    <textarea name="accomodation_description" id="" cols="30" rows="10" placeholder="Описание"></textarea>
+                                </div>
+                            
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="city" type="text" list="cities" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" 
+                                    placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="cities">
+                                        @foreach (var element in Model.DB.Cities)
+                                        {
+                                            <option>@element.Name</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="reset_btn" style="margin: 10px">
+                                    <button class="boxed-btn3 w-100" style="height: 50px; line-height: 25px;" type="submit">Создать</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Создание компании -->
+                        <div style="margin: 15px 0; border: 1px solid #888">
+                            <h4 style="margin: 10px">Создание компании</h4>
+                            <form action="~/Admin/AddCompany" method="post">
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="company_email" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Email" onfocus="this.value=''">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="company_password" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Пароль" onfocus="this.value=''">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="company_phonenumber" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Номер телефона" onfocus="this.value=''">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="company_name" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Название компании" onfocus="this.value=''">
+                                </div>
+
+                                <div class="input_field" style="margin: 10px">
+                                    <textarea name="company_description" id="" cols="30" rows="10" placeholder="Описание"></textarea>
+                                </div>
+
+                                <div class="reset_btn" style="margin: 10px">
+                                    <button class="boxed-btn3 w-100" style="height: 50px; line-height: 25px;" type="submit">Создать</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Создание тура -->
+                        <div style="margin: 15px 0; border: 1px solid #888">
+                            <h4 style="margin: 10px">Создание тура</h4>
+                            <form action="~/Admin/AddTour" method="post">
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="tour_title" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Название тура" onfocus="this.value=''">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="company" type="text" list="companies" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" 
+                                        placeholder="Компания" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="companies">
+                                        @foreach (var element in Model.DB.Companies)
+                                        {
+                                            <option>@element.Name</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="city" type="text" list="cities" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" 
+                                        placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="cities">
+                                        @foreach (var element in Model.DB.Cities)
+                                        {
+                                            <option>@element.Name</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="accomodation" type="text" list="accomodations" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" 
+                                        placeholder="Место проживания" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="accomodations">
+                                        @foreach (var element in Model.DB.Accommodations)
+                                        {
+                                            <option>@element.Name</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="date" type="date" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Дата">
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="cost" type="number" min="0" step="Any" 
+                                        style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Стоимость" />
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="nights_count" type="number" min="0" step="1" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Количество ночей" />
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="tickets_count" type="number" min="1" step="1" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Количество билетов" />
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="transport" type="text" list="transport" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" 
+                                        placeholder="Транспорт" onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="transport">
+                                        @foreach (var element in Model.DB.Transports)
+                                        {
+                                            <option>@element</option>
+                                        }
+                                    </datalist>
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="return_" id="return_input" type="text" list="return-list" 
+                                        style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Билет обратно" 
+                                        onfocus="this.value='';" onchange="this.blur()" />
+                                    <datalist id="return-list">
+                                        <option>Нет</option>
+                                        <option>Есть</option>
+                                    </datalist>
+                                </div>
+
+                                <div class="input_field" style="margin: 10px">
+                                    <textarea name="description" id="" cols="30" rows="10" placeholder="Описание"></textarea>
+                                </div>
+
+                                <div class="reset_btn" style="margin: 10px">
+                                    <button class="boxed-btn3 w-100" style="height: 50px; line-height: 25px;" type="submit">Создать</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
