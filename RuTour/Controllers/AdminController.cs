@@ -97,7 +97,7 @@ namespace RuTour.Controllers
 				|| transport == null || return_ == null)
 				return RedirectToAction("User", "Account");
 
-			var tour = db.Tours.FirstOrDefault(t => t.Title == tour_title);
+			var tour = db.Tours.FirstOrDefault(t => t.Title == tour_title && t.Company.Name == company);
 			if (tour == null)
 			{
 				tour = new Tour
@@ -122,7 +122,7 @@ namespace RuTour.Controllers
 
 		private bool AdminCheck()
 		{
-			return HttpContext.User.Identity.Name != null && HttpContext.User.Identity.Name.ToLower() == "admin";
+			return HttpContext.User.Identity.Name != null && HttpContext.User.Identity.Name == "admin";
 		}
 	}
 }

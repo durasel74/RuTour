@@ -44,7 +44,7 @@
                                 <div class="col-md-6">
                                     <h4 style="font-size: 30px; margin-left: -20px;">Приобретенные туры</h4>
                                 </div>
-                                <div class="col-md-6" style="margin-bottom: -20px;">
+                                @*<div class="col-md-6" style="margin-bottom: -20px;">
                                     <div class="serch_cat d-flex justify-content-end" style="margin-right: -20px;">
                                         <select style="border: 0; background-color: transparent;">
                                             <option data-display="Most Recent">Сортировка</option>
@@ -53,7 +53,7 @@
                                             <option value="3">По новизне </option>
                                         </select>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -138,14 +138,6 @@
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="accomodation_address" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Адрес" onfocus="this.value=''">
-                                </div>
-
-                                <div class="input_field" style="margin: 10px">
-                                    <textarea name="accomodation_description" id="" cols="30" rows="10" placeholder="Описание"></textarea>
-                                </div>
-                            
-                                <div class="single_field" style="margin: 10px">
                                     <input name="city" type="text" list="cities" style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px;" 
                                     placeholder="Город" onfocus="this.value='';" onchange="this.blur()" />
                                     <datalist id="cities">
@@ -154,6 +146,14 @@
                                             <option>@element.Name</option>
                                         }
                                     </datalist>
+                                </div>
+
+                                <div class="single_field" style="margin: 10px">
+                                    <input name="accomodation_address" type="text" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px" placeholder="Адрес" onfocus="this.value=''">
+                                </div>
+
+                                <div class="input_field" style="margin: 10px">
+                                    <textarea name="accomodation_description" id="" cols="30" rows="10" placeholder="Описание"></textarea>
                                 </div>
 
                                 <div class="reset_btn" style="margin: 10px">

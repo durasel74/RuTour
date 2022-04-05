@@ -28,23 +28,23 @@
                 <div class="logo" style="line-height: 40px;">
                     <a href="~/Home/Index" style="font-size: 50px; color: white;">RuTour</a>
                 </div>
-                <div class="nav-right" style="margin-top: -2px">
+                <div class="nav-right" style="margin-top: -2px; width: 240px">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a href="~/Account/Logout" style="margin: 0 10px; color: white;">Выход</a>
+                        <a href="~/Account/Logout" style="margin-top: 10px; color: white; float: right">Выход</a>
                     }
                     else
                     {
                        <a href="~/Account/Login" style="margin: 0 10px; color: white;">Вход</a>
-                       <a href="~/Account/Register" class="boxed-btn3" style="margin: 0 10px; height: 50px; line-height: 25px;">Регистрация</a> 
+                       <a href="~/Account/Register" class="boxed-btn3" style="margin: 0 10px; height: 50px; line-height: 25px;">Регистрация</a>
                     }
                 </div>
-                <nav class="main-menu" style="margin-top: -10px">
+                <nav class="main-menu" style="margin-top: -10px; margin-right: 400px">
                     <ul>
                         @*class="active"*@
                         <li><a href="~/Home/Index" style="line-height: 60px; font-size: 20px;">Туры</a></li>
                         <li><a href="~/Account/User" style="line-height: 60px; font-size: 20px;">Личный кабинет</a></li>
-                        <li><a href="#" style="line-height: 60px; font-size: 20px;">О нас</a></li>
+                        <li><a href="~/Home/About" style="line-height: 60px; font-size: 20px;">О нас</a></li>
                     </ul>
                 </nav>
                 <div id="mobile-menu-wrap"></div>
@@ -78,14 +78,14 @@
         </div>
     </footer>
 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
 
     <script>
         $(function() {

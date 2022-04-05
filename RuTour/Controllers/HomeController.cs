@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using RuTour.Models;
@@ -19,10 +20,12 @@ namespace RuTour.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Index(string? city, string? company, DateTime? date, 
-			int? nights, string? transport, string? return_, int? max_cost)
+		public IActionResult Index(string? title_frag, string? city, string? company, DateTime? date, 
+			int? nights, string? transport, string? return_, string? cost, int? max_cost)
 		{
 			db.ClearSearchList();
+			if (!String.IsNullOrEmpty(title_frag))
+				db.SearchList = db.SearchList.Where(t => t.Title.ToLower().StartsWith(title_frag.ToLower())).ToList();
 			if (!String.IsNullOrEmpty(city))
 				db.SearchList = db.SearchList.Where(t => t.City.Name == city).ToList();
 			if (!String.IsNullOrEmpty(company))
@@ -37,6 +40,13 @@ namespace RuTour.Controllers
 				db.SearchList = db.SearchList.Where(t => t.ReturnString == return_).ToList();
 			if (max_cost != null)
 				db.SearchList = db.SearchList.Where(t => t.Cost <= max_cost).ToList();
+			if (cost != null)
+			{
+				string[] splitedCost = cost.Split('-');
+				int minCost = int.Parse(Regex.Replace(splitedCost[0], @"[^\d]+", ""));
+				int maxCost = int.Parse(Regex.Replace(splitedCost[1], @"[^\d]+", ""));
+				db.SearchList = db.SearchList.Where(t => t.Cost >= minCost && t.Cost <= maxCost).ToList();
+			}
 			return View(db);
 		}
 
@@ -44,7 +54,7 @@ namespace RuTour.Controllers
 		public IActionResult Tour(int? id)
 		{
 			if (id == null) return RedirectToAction("Index");
-			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).FirstOrDefault(tour => tour.Id == id);
+			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).Include(t => t.Accommodation).FirstOrDefault(tour => tour.Id == id);
 			return View(tour);
 		}
 
@@ -54,6 +64,12 @@ namespace RuTour.Controllers
 			if (id == null) return RedirectToAction("Index");
 			var company = db.Companies.Include(c => c.Tours).ThenInclude(t => t.City).FirstOrDefault(compnay => compnay.Id == id);
 			return View(company);
+		}
+
+		[HttpGet]
+		public IActionResult About()
+		{
+			return View();
 		}
 	}
 }
