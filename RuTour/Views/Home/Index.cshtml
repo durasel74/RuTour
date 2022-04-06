@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "RuTour";
 }
-
-<div class="hero-area" 
-    style="height: 650px; background-position-y: -50px; background-image: url(https://localhost:7295/img/manaraga-toned.jpg); background-size:cover">
+@*~/img/manaraga-toned.jpg*@
+<div class="hero-area"
+    style="height: 650px; background-position-y: -50px; background-size:cover; background-image: url('@Url.Content("~/img/manaraga-toned.jpg")')">
 </div>
 
 <section class="search-filter">
