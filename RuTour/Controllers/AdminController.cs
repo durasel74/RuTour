@@ -20,9 +20,10 @@ namespace RuTour.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "admin")]
 		public IActionResult AddCity(string? city_name, string? country)
 		{
-			if (!AdminCheck() || city_name == null || country == null)
+			if (city_name == null || country == null)
 				return RedirectToAction("User", "Account");
 
 			var city = db.Cities.FirstOrDefault(c => c.Name == city_name);
@@ -40,10 +41,11 @@ namespace RuTour.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "admin")]
 		public IActionResult AddAccomodation(string? accomodation_name, string? accomodation_address,
 			string? accomodation_description, string? city)
 		{
-			if (!AdminCheck() || accomodation_name == null || accomodation_address == null || city == null)
+			if (accomodation_name == null || accomodation_address == null || city == null)
 				return RedirectToAction("User", "Account");
 
 			var accommodation = db.Accommodations.FirstOrDefault(c => c.Name == accomodation_name);
@@ -63,11 +65,11 @@ namespace RuTour.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddCompany(string? company_email, string? company_password,
-			string? company_phonenumber, string? company_name, string? company_description)
+		[Authorize(Roles = "admin")]
+		public IActionResult AddCompany(string? company_email, string? company_phonenumber, 
+		string? company_name, string? company_description)
 		{
-			if (!AdminCheck() || company_email == null || company_password == null
-			|| company_name == null)
+			if (company_email == null || company_name == null)
 				return RedirectToAction("User", "Account");
 
 			var company = db.Companies.FirstOrDefault(c => c.Email == company_email || c.Name == company_name);
@@ -76,7 +78,6 @@ namespace RuTour.Controllers
 				company = new Company
 				{
 					Email = company_email,
-					Password = company_password,
 					PhoneNumber = company_phonenumber ?? "",
 					Name = company_name,
 					Description = company_description ?? "",
@@ -88,11 +89,12 @@ namespace RuTour.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "admin")]
 		public IActionResult AddTour(string? tour_title, string? company, string? city,
 			string? accomodation, DateTime? date, decimal? cost, int? nights_count,
 			int? tickets_count, string? transport, string? return_, string? description)
 		{
-			if (!AdminCheck() || tour_title == null || company == null || city == null
+			if (tour_title == null || company == null || city == null
 				|| date == null || cost == null || nights_count == null || tickets_count == null
 				|| transport == null || return_ == null)
 				return RedirectToAction("User", "Account");
@@ -118,11 +120,6 @@ namespace RuTour.Controllers
 				db.SaveChanges();
 			}
 			return RedirectToAction("User", "Account");
-		}
-
-		private bool AdminCheck()
-		{
-			return HttpContext.User.Identity.Name != null && HttpContext.User.Identity.Name == "admin";
 		}
 	}
 }

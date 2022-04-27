@@ -14,10 +14,11 @@ namespace RuTour.Models
 		public DbSet<User> Users { get; set; }
 		public DbSet<Accommodation> Accommodations { get; set; }
 		public DbSet<Tour> Tours { get; set; }
+		public DbSet<Role> Roles { get; set; }
 
-		public List<String> Transports 
-		{ 
-			get 
+		public List<String> Transports
+		{
+			get
 			{
 				if (transports.Count == 0)
 				{
@@ -36,7 +37,8 @@ namespace RuTour.Models
 			// Database.EnsureDeleted();
 			Database.EnsureCreated();
 
-			AddDefaultCountries();
+			if (!this.Countries.Any()) AddDefaultCountries();
+			if (!this.Roles.Any()) AddRoles();
 			if (!this.Users.Any()) AddAdmin();
 			//if (!this.Countries.Any() && !this.Cities.Any()
 			//	&& !this.Companies.Any() && !this.Accommodations.Any()
@@ -52,14 +54,21 @@ namespace RuTour.Models
 			SearchList = this.Tours.Include(t => t.Company).Include(t => t.City).ToList();
 		}
 
+		private void AddRoles()
+		{
+			var adminRole = new Role { Name = "admin" };
+			var companyRole = new Role { Name = "company" };
+			var userRole = new Role { Name = "user" };
+			Roles.AddRange(adminRole, companyRole, userRole);
+			this.SaveChanges();
+		}
+
 		private void AddDefaultCountries()
 		{
-			if (!this.Countries.Any())
-			{
-				var country1 = new Country { Name = "Россия" };
-				var country2 = new Country { Name = "Турция" };
-				Countries.AddRange(country1, country2);
-			}
+			var country1 = new Country { Name = "Россия" };
+			var country2 = new Country { Name = "Турция" };
+			Countries.AddRange(country1, country2);
+			this.SaveChanges();
 		}
 
 		private void AddAdmin()
@@ -68,6 +77,7 @@ namespace RuTour.Models
 			{
 				Email = "admin",
 				Password = "stmr113",
+				Role = Roles.First(r => r.Name == "admin"),
 			};
 			Users.AddRange(admin);
 			this.SaveChanges();

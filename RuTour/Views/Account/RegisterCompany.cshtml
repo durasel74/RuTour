@@ -1,6 +1,6 @@
-﻿@model RuTour.ViewModels.RegisterModel
+﻿@model RuTour.ViewModels.RegisterCompanyModel
 @{
-    ViewData["Title"] = "RuTour - регистрация";
+    ViewData["Title"] = "RuTour - создание компании";
 }
 
 <div class="job_details_area" style="margin-top: 70px;">
@@ -8,15 +8,25 @@
         <div class="row">
             <div class="container-fluid col-lg-5">
                 <div class="descript_wrap white-bg" style="box-shadow: 3px 3px 6px 3px #777; border-radius: 15px; height: 500px">
-                    <h2 style="text-align: center; margin-bottom: 60px">Регистрация</h2>
+                    <h2 style="text-align: center; margin-bottom: 40px">Создание компании</h2>
 
-                    <form asp-controller="Account" asp-action="Register" asp-anti-forgery="true">
+                    <form asp-controller="Account" asp-action="RegisterCompany" asp-anti-forgery="true">
                         <div style="color: red" class="validation" asp-validation-summary="ModelOnly"></div>
                         <div>
+                            <div class="form-group">
+                                <input type="text" asp-for="Name" placeholder="Название компании" 
+                                style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
+                                <span asp-validation-for="Name" />
+                            </div>
                             <div class="form-group">
                                 <input type="text" asp-for="Email" placeholder="Email" 
                                 style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
                                 <span asp-validation-for="Email" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" asp-for="PhoneNumber" placeholder="Номер телефона" 
+                                style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
+                                <span asp-validation-for="PhoneNumber" />
                             </div>
                             <div class="form-group">
                                 <input type="password" asp-for="Password" placeholder="Пароль" 
@@ -29,21 +39,17 @@
                                 <span asp-validation-for="ConfirmPassword"/>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Зарегистрироваться" class="boxed-btn3 w-100" 
-                                style="margin-top: 30px; height: 50px; line-height: 23px; font-size: 16px;"/>
+                                <input type="submit" value="Создать" class="boxed-btn3 w-100" 
+                                style="margin-top: 20px; height: 50px; line-height: 23px; font-size: 16px;"/>
                             </div>
                         </div>
                     </form>
 
-                    <p style="margin-top: 50px; text-align: center">
+                    @*<p style="margin-top: 50px; text-align: center">
                         Для входа перейдите по 
-                        <a class="reg_link" asp-action="Login" asp-controller="Account">этой</a> 
+                        <a class="reg_link" style="margin-top: 50px" asp-action="Login" asp-controller="Account">этой</a> 
                         ссылке
-                    </p>
-                    <p style="margin-top: -15px; text-align: center">
-                        Либо вы можете создать 
-                        <a class="reg_link" asp-action="RegisterCompany" asp-controller="Account">компанию</a>
-                    </p>
+                    </p>*@
                 </div>
             </div>
         </div>

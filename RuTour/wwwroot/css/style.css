@@ -11111,6 +11111,11 @@ h6 {
     color: #53ea93;
 }
 
+.reg_link:hover {
+    transition: all 0.3s ease;
+    color: #53ea93;
+}
+
 .job_details_area .job_lists.m-0 .col-lg-12.col-md-12 {
     margin: 5px 0;
 }

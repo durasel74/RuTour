@@ -35,7 +35,6 @@ namespace RuTour.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.Email);
-
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -58,15 +57,67 @@ namespace RuTour.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user == null)
                 {
+                    // добавляем пользователя в бд
+                    var userRole = db.Roles.First(r => r.Name == "user");
+					db.Users.Add(new User
+					{
+						Email = model.Email,
+						Password = model.Password,
+						Role = userRole
+					});
+					await db.SaveChangesAsync();
+
+                    // await Authenticate(model.Email); // аутентификация
+
+                    return RedirectToAction("Login", "Account");
+                }
+                else ModelState.AddModelError("", "Пользователь с такой почтой уже существует");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult RegisterCompany()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterCompany(RegisterCompanyModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                if (user == null)
+                {
 					// добавляем пользователя в бд
-                    db.Users.Add(new User { Email = model.Email, Password = model.Password });
+					var companyRole = db.Roles.First(r => r.Name == "company");
+                    var newUser = new User
+                    {
+                        Email = model.Email,
+                        Password = model.Password,
+                        PhoneNumber = model.PhoneNumber,
+                        Role = companyRole
+                    };
+                    db.Users.Add(newUser);
+
+					// добавляем компанию в бд
+                    db.Companies.Add(new Company
+                    {
+                        Name = model.Name,
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        Description = ""
+                    });
+					Console.WriteLine($"\n\n\n\n\n__________________________{newUser.Role.Name}\n\n\n\\n\n");
                     await db.SaveChangesAsync();
 
                     // await Authenticate(model.Email); // аутентификация
 
                     return RedirectToAction("Login", "Account");
                 }
-                else ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                else ModelState.AddModelError("", "Пользователь с такой почтой уже существует");
             }
             return View(model);
         }
@@ -103,9 +154,13 @@ namespace RuTour.Controllers
 
         private async Task Authenticate(string userName)
         {
+            User user = db.Users.Include(u => u.Role). FirstOrDefault(u => u.Email == userName);
+            if (user is null) return;
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
