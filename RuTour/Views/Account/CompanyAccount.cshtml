@@ -1,0 +1,95 @@
+﻿@model RuTour.Models.Company
+@{
+    ViewData["Title"] = "RuTour - личный кабинет";
+}
+
+<div class="job_details_area" style="margin-top: 70px;">
+    <div class="container">
+        <div class="row">
+            <div class="container-fluid">
+                <div class="descript_wrap white-bg" style="border-radius: 10px;">
+                    <h4 style="font-size: 30px; margin-bottom: 20px;">@Model.Name</h4>
+
+                    <div class="job_content summery_header" style="margin-top: 30px">
+                        <ul>
+                            <li style="color: #555;">Почта: <span>@Model.Email</span></li>
+                            <li style="color: #555;">Телефон: <span>@Model.PhoneNumber</span></li>
+                        </ul>
+                    </div>
+
+                    <p style="font-size: 18px; color: #444; margin-top: 20px">@Model.Description</p>
+
+                    <div class="job_content" style="margin-top: 10px; list-style: none; list-style-type: none;">
+                        <button class="boxed-btn w-100" style="height: 40px; line-height: 15px; font-size: 16px;">Редактировать</button>
+                    </div>
+                </div>
+
+                <!-- Список туров -->
+                <div class="container-fluid" style="margin-top: 40px">
+                    @if (Model.Tours != null && Model.Tours.Count > 0)
+                    {
+                        <!-- Сортировка -->
+                        <div class="recent_joblist_wrap" style="margin-top: 30px;">
+                            <div class="recent_joblist white-bg" style="background-color: transparent;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <h4 style="font-size: 30px; margin-left: -20px;">Туры от компании</h4>
+                                    </div>
+                                    @*<div class="col-md-6" style="margin-bottom: -20px;">
+                                        <div class="serch_cat d-flex justify-content-end" style="margin-right: -20px;">
+                                            <select style="border: 0; background-color: transparent;">
+                                                <option data-display="Most Recent">Сортировка</option>
+                                                <option value="1">По минимальной цене</option>
+                                                <option value="2">По максимальной цене </option>
+                                                <option value="3">По новизне </option>
+                                            </select>
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Туры -->
+                        <div class="job_lists m-0">
+                            <div class="row">
+                                @foreach (var element in Model.Tours)
+                                {
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="single_jobs white-bg d-flex justify-content-between">
+                                            <div class="jobs_left d-flex align-items-center">
+                                                <div class="jobs_conetent">
+                                                    <a href="~/Home/Tour/@element.Id">
+                                                        <h4 style="font-size: 30px;">@element.Title</h4>
+                                                    </a>
+                                                    <div class="links_locat d-flex align-items-center" style="margin-top: 35px;">
+                                                        <div class="location">
+                                                            <p> <i class="fa fa-map-marker"></i>Город @element.City.Name</p>
+                                                        </div>
+                                                        <div class="location">
+                                                            <p> <i class="fa fa-clock-o"></i>Дата @element.Date.ToShortDateString()</p>
+                                                        </div>
+                                                        <div class="location">
+                                                            <p> <i class="fa fa-clock-o"></i>Ночей @element.NightsCount</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="jobs_right">
+                                                <div class="apply_now">
+                                                    <a href="~/Home/Tour/@element.Id" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
+                                                </div>
+                                                <div class="date">
+                                                    <p style="font-size: 16px;">Стоимость @element.Cost руб</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

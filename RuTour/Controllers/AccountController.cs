@@ -110,7 +110,6 @@ namespace RuTour.Controllers
                         PhoneNumber = model.PhoneNumber,
                         Description = ""
                     });
-					Console.WriteLine($"\n\n\n\n\n__________________________{newUser.Role.Name}\n\n\n\\n\n");
                     await db.SaveChangesAsync();
 
                     // await Authenticate(model.Email); // аутентификация
@@ -129,13 +128,61 @@ namespace RuTour.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult AdminAccount()
+        {
+            User user = GetCurrentUserByRole("admin");
+            if (user == null) return RedirectToAction("Login", "Account");
+            user.DB = db;
+            return View(user);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "user")]
+        public IActionResult UserAccount()
+		{
+            User user = GetCurrentUserByRole("user");
+            if (user == null) return RedirectToAction("Login", "Account");
+            user.DB = db;
+            return View(user);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "company")]
+        public IActionResult CompanyAccount()
+        {
+            User user = GetCurrentUserByRole("company");
+            if (user == null) return RedirectToAction("Login", "Account");
+            var userName = HttpContext.User.Identity.Name;
+            Company company = db.Companies.Include(c => c.Tours).First(u => u.Email == userName);
+            return View(company);
+        }
+
+
+
+
+
+
+
+
+        [HttpGet]
         [Authorize]
         public IActionResult User()
         {
             var userName = HttpContext.User.Identity.Name;
-            User user = db.Users.Include(u => u.Tours).ThenInclude(t => t.City).FirstOrDefault(u => u.Email == userName);
-            user.DB = db;
-            return View(user);
+            User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
+
+			switch (user.Role.Name)
+			{
+                case "admin":
+                    return RedirectToAction("AdminAccount", "Account");
+                case "user":
+                    return RedirectToAction("UserAccount", "Account");
+                case "company":
+                    return RedirectToAction("CompanyAccount", "Account");
+                default:
+                    return RedirectToAction("Login", "Account");
+            }
         }
 
         [Authorize]
@@ -152,6 +199,10 @@ namespace RuTour.Controllers
 			return RedirectToAction("Tour", "Home", new { id = id });
         }
 
+
+
+
+
         private async Task Authenticate(string userName)
         {
             User user = db.Users.Include(u => u.Role). FirstOrDefault(u => u.Email == userName);
@@ -165,6 +216,16 @@ namespace RuTour.Controllers
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+
+        // Возвращает текущего пользователя если его роль совпадает с переданной, вернет null если роль не совпадает.
+        private User GetCurrentUserByRole(string role)
+		{
+            var userName = HttpContext.User.Identity.Name;
+            User user = db.Users.Include(u => u.Role).Include(u => u.Tours)
+                .ThenInclude(t => t.City).FirstOrDefault(u => u.Email == userName);
+            if (user == null || user.Role.Name != role) return null;
+            else return user;
         }
     }
 }
