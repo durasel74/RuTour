@@ -85,6 +85,7 @@
     <script src="~/js/jquery.nice-select.min.js"></script>
     <script src="~/js/jquery.slicknav.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/accordion.js"></script>
     <script src="~/js/main.js"></script>
 
     <script>
@@ -101,6 +102,12 @@
             });
             $("#amount").val($("#slider-range").slider("values", 0) + " руб" +
                 " - " + $("#slider-range").slider("values", 1) + " руб");
+        });
+    </script>
+
+    <script>
+        new ItcAccordion(document.querySelector('.accordion'), {
+            alwaysOpen: false
         });
     </script>
 </body>

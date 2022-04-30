@@ -1,7 +1,12 @@
-﻿namespace RuTour.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace RuTour.Models
 {
 	public class Company
 	{
+		[NotMapped]
+		public TourContext DB { get; set; }
+
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Email { get; set; }
