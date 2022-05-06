@@ -159,8 +159,54 @@ namespace RuTour.Controllers
             return View(company);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "company")]
+        public IActionResult AddTour(string? tour_title, string? city,
+            string? accomodation, DateTime? date, decimal? cost, int? nights_count,
+            int? tickets_count, string? transport, string? return_, string? description)
+        {
+            if (tour_title == null || city == null || date == null || cost == null || nights_count == null
+                || tickets_count == null || transport == null || return_ == null)
+                return RedirectToAction("User", "Account");
 
+            var userName = HttpContext.User.Identity.Name;
+            Company company = db.Companies.First(u => u.Email == userName);
 
+            var tour = db.Tours.FirstOrDefault(t => t.Title == tour_title && t.Company.Name == company.Name);
+            if (tour == null)
+            {
+                tour = new Tour
+                {
+                    Title = tour_title,
+                    Company = company,
+                    City = db.Cities.First(c => c.Name == city),
+                    Accommodation = db.Accommodations.FirstOrDefault(a => a.Name == accomodation),
+                    Date = date.GetValueOrDefault(),
+                    Cost = cost.GetValueOrDefault(),
+                    NightsCount = nights_count.GetValueOrDefault(),
+                    MaxTicketNumber = tickets_count.GetValueOrDefault(),
+                    Transport = Transport.None.ToTransport(transport),
+                    Return = return_ == "Есть",
+                    Description = description ?? "",
+                };
+                db.Tours.Add(tour);
+                db.SaveChanges();
+            }
+            return RedirectToAction("CompanyAccount", "Account");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "company")]
+        public IActionResult DeleteTour(int? id)
+        {
+            Tour tour = db.Tours.FirstOrDefault(t => t.Id == id);
+            if (tour != null)
+            {
+                db.Tours.Remove(tour);
+                db.SaveChanges();
+            }
+            return RedirectToAction("CompanyAccount", "Account");
+        }
 
 
 
@@ -200,45 +246,7 @@ namespace RuTour.Controllers
 			return RedirectToAction("Tour", "Home", new { id = id });
         }
 
-        [HttpPost]
-        [Authorize(Roles = "company")]
-        public IActionResult AddTour(string? tour_title, string? city,
-            string? accomodation, DateTime? date, decimal? cost, int? nights_count,
-            int? tickets_count, string? transport, string? return_, string? description)
-        {
-            if (tour_title == null || city == null || date == null || cost == null || nights_count == null 
-                || tickets_count == null || transport == null || return_ == null)
-                return RedirectToAction("User", "Account");
-
-            var userName = HttpContext.User.Identity.Name;
-            Company company = db.Companies.First(u => u.Email == userName);
-
-            var tour = db.Tours.FirstOrDefault(t => t.Title == tour_title && t.Company.Name == company.Name);
-            if (tour == null)
-            {
-                tour = new Tour
-                {
-                    Title = tour_title,
-                    Company = company,
-                    City = db.Cities.First(c => c.Name == city),
-                    Accommodation = db.Accommodations.FirstOrDefault(a => a.Name == accomodation),
-                    Date = date.GetValueOrDefault(),
-                    Cost = cost.GetValueOrDefault(),
-                    NightsCount = nights_count.GetValueOrDefault(),
-                    MaxTicketNumber = tickets_count.GetValueOrDefault(),
-                    Transport = Transport.None.ToTransport(transport),
-                    Return = return_ == "Есть",
-                    Description = description ?? "",
-                };
-                db.Tours.Add(tour);
-                db.SaveChanges();
-            }
-            return RedirectToAction("CompanyAccount", "Account");
-        }
-
-
-
-
+        
 
         private async Task Authenticate(string userName)
         {

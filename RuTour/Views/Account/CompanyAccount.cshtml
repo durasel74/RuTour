@@ -165,13 +165,33 @@
                                             </div>
                                             <div class="jobs_right">
                                                 <div class="apply_now">
-                                                    <a href="~/Home/Tour/@element.Id" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
+                                                    <a href="~/Home/Tour/@element.Id" class="boxed-btn3"
+                                                    style="height: 50px; line-height: 30px; font-size: 16px;">Открыть</a>
+                                                    <a href="~/Home/Tour/@element.Id" class="boxed-btn3"
+                                                    style="height: 50px; line-height: 30px; font-size: 16px;">Редактировать</a>
+                                                    <a href="#main_@element.Id" class="boxed-btn2"
+                                                    style="padding-top: 10px; height: 50px; line-height: 30px; font-size: 16px;">Удалить</a>
                                                 </div>
                                                 <div class="date">
                                                     <p style="font-size: 16px;">Стоимость @element.Cost руб</p>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <!-- Подтверждение удаления -->
+                                    <div id="main_@element.Id" class="modal_field">
+                                      <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
+                                          <p>Вы действительно хотите удалить этот тур?</p>
+                                          <div>
+                                              <form action="~/Account/DeleteTour" method="post">
+                                                  <button class="boxed-btn2" type="submit" name="id" value="@element.Id"
+                                                  style="font-size: 16px; color: #FFF; width: 150px; margin: 10px">Удалить</button>
+                                                  <a href="#" class="boxed-btn" 
+                                                  style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
+                                              </form>
+                                          </div>
+                                      </div>
                                     </div>
                                 }
                             </div>
