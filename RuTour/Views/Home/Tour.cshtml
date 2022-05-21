@@ -27,23 +27,167 @@
                     <div class="summery_header">
                         <h3>Детали тура</h3>
                     </div>
-                    <div class="job_content summery_header" style="margin-top: -20px">
+                    <div class="job_content" style="margin-top: -20px">
                         <ul>
-                            <li style="color: #555;">Город: <span>@Model.City.Name</span></li>
-                            <li style="color: #555;">Дата: <span>@Model.Date.ToShortDateString()</span></li>
-                            <li style="color: #555;">Количество ночей: <span>@Model.NightsCount</span></li>
-                            <li style="color: #555;">Транспорт: <span>@Model.TransportString</span></li>
-                            <li style="color: #555;">Обратный билет: <span>@Model.ReturnString</span></li>
-                            <li style="color: #555;">Место проживания: <span>@(Model.Accommodation?.Name ?? "Нет")</span></li>
-                            <li style="color: #555;">Осталось мест: <span>@Model.TicketsLeft</span></li>
-                            <li style="color: #555;">Стоимость: <span>@Model.Cost руб.</span></li>
+                            <li style="color: #555">Город: <span>@Model.City.Name</span></li>
+                            <li style="color: #555">Дата: <span>@Model.Date.ToShortDateString()</span></li>
+                            <li style="color: #555">Количество ночей: <span>@Model.NightsCount</span></li>
+                            <li style="color: #555">Транспорт: <span>@Model.TransportString</span></li>
+                            <li style="color: #555">Обратный билет: <span>@Model.ReturnString</span></li>
+                            <li style="color: #555">Место проживания: <span>@(Model.Accommodation?.Name ?? "Нет")</span></li>
+                            <li style="color: #555">Осталось мест: <span>@Model.TicketsLeft</span></li>
+                            <li style="color: #555">Стоимость: <span id="ticket_cost">@Model.Cost</span> руб.</li>
                         </ul>
                     </div>
-                    <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
-                        <a href="~/Account/Buy/@Model.Id" class="boxed-btn3 w-100" style="line-height: 45px; font-size: 22px;">Купить</a>
-                    </div>
+                    @if (ViewBag.Role == "user")
+                    {
+                        <hr style="margin-top: -10px"/>
+                        <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
+                            <form action="~/Account/ClimeTour" method="post">
+                                <div style="margin: -20px auto 20px">
+                                  <input style="display: none" id="ticket_left" value="@Model.TicketsLeft">
+                                  <input type="button" value="-" id="button_minus">
+                                  <input style="width: 50px" id="num_count" name="count" type="number" min="1" value="1" readonly>
+                                  <input type="button" value="+" id="button_plus">
+                                </div>
+                                <h4 style="margin-bottom: 15px; margin-top: -10px; color: #555;">Итог: <span id="total_cost">@Model.Cost</span> руб.</h4>
+                                <input style="display: none" name="id" value="@Model.Id">
+                                <input type="submit" class="boxed-btn3 w-100" style="line-height: 45px; font-size: 22px;" value="Оставить заявку">
+                            </form>
+                        </div>
+                    }
                 </div>
             </div>
+        </div>
+
+        <!-- Список пользователей -->
+        <div class="container-fluid" style="margin-top: 40px">
+            @if ((ViewBag.Role == "company" && ViewBag.CompanyLogin == Model.Company.Email) 
+                || ViewBag.Role == "admin")
+            {
+                <!-- Не подтвержденные -->
+                @if (Model.NoAcceptedClaimes != null && Model.NoAcceptedClaimes.Count > 0)
+                {
+                    <!-- Описание -->
+                    <div class="recent_joblist_wrap" style="margin-top: 30px;">
+                        <div class="recent_joblist white-bg" style="background-color: transparent;">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h4 style="font-size: 30px; margin-left: -20px;">Заявки</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Пользователи -->
+                    <div class="job_lists m-0">
+                        <div class="row">
+                            @foreach (var claim in Model.NoAcceptedClaimes)
+                            {
+                                var element = claim.User;
+
+                                <!-- Карточка -->
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="single_jobs white-bg d-flex justify-content-between">
+                                        <div class="jobs_left d-flex align-items-center">
+                                            <div class="jobs_conetent">
+                                                <h4>@element.Email</h4>
+                                                <h5>@element.PhoneNumber</h5>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div>
+                                                @*<input style="width: 50px; height: 50px" class="custom-checkbox"
+                                                type="checkbox" name="accepted" value="yes">*@
+                                                <a href="#main_@element.Id" class="boxed-btn2"
+                                                style="padding-left: 11px; height: 50px; line-height: 20px; width: 50px; font-size: 50px">x</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Подтверждение удаления -->
+                                <div id="main_@element.Id" class="modal_field">
+                                    <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
+                                        <p>Вы действительно хотите удалить эту заявку?</p>
+                                        <div>
+                                            <form action="~/Account/DeleteUserClime" method="post">
+                                                <input style="display: none" name="tour_id" value="@Model.Id"/>
+                                                <button class="boxed-btn2" type="submit" name="user_id" value="@element.Id"
+                                                style="font-size: 16px; color: #FFF; width: 150px; margin: 10px">Удалить</button>
+                                                <a href="#" class="boxed-btn" 
+                                                style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Подтвержденные -->
+                @if (Model.AcceptedClaimes != null && Model.AcceptedClaimes.Count > 0)
+                {
+                    <!-- Описание -->
+                    <div class="recent_joblist_wrap" style="margin-top: 30px;">
+                        <div class="recent_joblist white-bg" style="background-color: transparent;">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h4 style="font-size: 30px; margin-left: -20px;">Подтвержденные заявки</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Пользователи -->
+                    <div class="job_lists m-0">
+                        <div class="row">
+                            @foreach (var claim in Model.AcceptedClaimes)
+                            {
+                                var element = claim.User;
+
+                                <!-- Карточка -->
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="single_jobs white-bg d-flex justify-content-between">
+                                        <div class="jobs_left d-flex align-items-center">
+                                            <div class="jobs_conetent">
+                                                <h4>@element.Email</h4>
+                                                <h5>@element.PhoneNumber</h5>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div class="apply_now">
+                                                <a href="#main_@element.Id" class="boxed-btn2"
+                                                style="padding-left: 11px; height: 50px; line-height: 20px; width: 50px; font-size: 50px">x</a>
+                                            </div>
+                                            <div class="apply_now">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Подтверждение удаления -->
+                                <div id="main_@element.Id" class="modal_field">
+                                    <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
+                                        <p>Вы действительно хотите удалить эту заявку?</p>
+                                        <div>
+                                            <form action="~/Account/DeleteUserClime" method="post">
+                                                <input style="display: none" name="tour_id" value="@Model.Id"/>
+                                                <button class="boxed-btn2" type="submit" name="user_id" value="@element.Id"
+                                                style="font-size: 16px; color: #FFF; width: 150px; margin: 10px">Удалить</button>
+                                                <a href="#" class="boxed-btn" 
+                                                style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

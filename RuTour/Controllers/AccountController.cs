@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
@@ -128,6 +126,27 @@ namespace RuTour.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public IActionResult User()
+        {
+            var userName = HttpContext.User.Identity.Name;
+            User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
+
+            if (user == null) return RedirectToAction("Login", "Account");
+            switch (user.Role.Name)
+            {
+                case "admin":
+                    return RedirectToAction("AdminAccount", "Account");
+                case "user":
+                    return RedirectToAction("UserAccount", "Account");
+                case "company":
+                    return RedirectToAction("CompanyAccount", "Account");
+                default:
+                    return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult AdminAccount()
         {
@@ -163,7 +182,7 @@ namespace RuTour.Controllers
         [Authorize(Roles = "company")]
         public IActionResult AddTour(string? tour_title, string? city,
             string? accomodation, DateTime? date, decimal? cost, int? nights_count,
-            int? tickets_count, string? transport, string? return_, string? description)
+            int? tickets_count, string? transport, string? return_, string? description_field)
         {
             if (tour_title == null || city == null || date == null || cost == null || nights_count == null
                 || tickets_count == null || transport == null || return_ == null)
@@ -187,7 +206,7 @@ namespace RuTour.Controllers
                     MaxTicketNumber = tickets_count.GetValueOrDefault(),
                     Transport = Transport.None.ToTransport(transport),
                     Return = return_ == "Есть",
-                    Description = description ?? "",
+                    Description = description_field ?? "",
                 };
                 db.Tours.Add(tour);
                 db.SaveChanges();
@@ -208,55 +227,48 @@ namespace RuTour.Controllers
             return RedirectToAction("CompanyAccount", "Account");
         }
 
-
-
-
-
-        [HttpGet]
-        [Authorize]
-        public IActionResult User()
+        [HttpPost]
+        [Authorize(Roles = "company")]
+        public IActionResult DeleteUserClime(int? tour_id, int? user_id)
         {
-            var userName = HttpContext.User.Identity.Name;
-            User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
-
-			switch (user.Role.Name)
+            Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+                .FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
+            if (claim != null)
 			{
-                case "admin":
-                    return RedirectToAction("AdminAccount", "Account");
-                case "user":
-                    return RedirectToAction("UserAccount", "Account");
-                case "company":
-                    return RedirectToAction("CompanyAccount", "Account");
-                default:
-                    return RedirectToAction("Login", "Account");
-            }
+                db.Claimes.Remove(claim);
+                db.SaveChanges();
+			}
+            return RedirectToAction("Tour", "Home", new { id = tour_id });
         }
 
-        [Authorize(Roles = "user")]
-        public IActionResult Buy(int? id)
+		[Authorize(Roles = "user")]
+		public IActionResult ClimeTour(int? id, int? count)
 		{
-            if (id == null) return RedirectToAction("Index", "Home");
+			if (id == null || count == null) return RedirectToAction("Index", "Home");
 			var tour = db.Tours.FirstOrDefault(t => t.Id == id);
-
 			var userName = HttpContext.User.Identity.Name;
 			User user = db.Users.FirstOrDefault(u => u.Email == userName);
 
-			user?.Tours?.Add(tour);
+            var newClaim = new Models.Claim {
+                Tour = tour,
+                User = user,
+                Count = count.Value,
+                Accepted = false
+            };
+			user?.Claimes?.Add(newClaim);
 			db.SaveChanges();
 			return RedirectToAction("Tour", "Home", new { id = id });
-        }
-
-        
+		}
 
         private async Task Authenticate(string userName)
         {
             User user = db.Users.Include(u => u.Role). FirstOrDefault(u => u.Email == userName);
             if (user is null) return;
 
-            var claims = new List<Claim>
+            var claims = new List<System.Security.Claims.Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
+                new System.Security.Claims.Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new System.Security.Claims.Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
@@ -267,7 +279,7 @@ namespace RuTour.Controllers
         private User GetCurrentUserByRole(string role)
 		{
             var userName = HttpContext.User.Identity.Name;
-            User user = db.Users.Include(u => u.Role).Include(u => u.Tours)
+            User user = db.Users.Include(u => u.Role).Include(u => u.Claimes).ThenInclude(c => c.Tour)
                 .ThenInclude(t => t.City).FirstOrDefault(u => u.Email == userName);
             if (user == null || user.Role.Name != role) return null;
             else return user;

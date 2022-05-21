@@ -110,5 +110,30 @@
             alwaysOpen: false
         });
     </script>
+
+    <script>
+        var numCount = document.getElementById('num_count');
+        var plusBtn = document.getElementById('button_plus');
+        var minusBtn = document.getElementById('button_minus');
+        var ticket_left = parseInt(document.getElementById('ticket_left').value);
+        var ticket_cost = parseFloat(document.getElementById('ticket_cost').textContent);
+        var total_cost = 0;
+        plusBtn.onclick = function() {
+          var qty = parseInt(numCount.value);
+          qty = qty + 1;
+          if (qty > ticket_left) qty = ticket_left;
+          numCount.value = qty;
+          total_cost = parseFloat(qty) * ticket_cost;
+          document.getElementById("total_cost").textContent=total_cost;
+        }
+        minusBtn.onclick = function() {
+          var qty = parseInt(numCount.value);
+          qty = qty - 1;
+          if (qty < 1) qty = 1;
+          numCount.value = qty;
+          total_cost = parseFloat(qty) * ticket_cost;
+          document.getElementById("total_cost").textContent=total_cost;
+        }
+    </script>
 </body>
 </html>

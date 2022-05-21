@@ -14,6 +14,6 @@ namespace RuTour.Models
 
 		public int RoleId { get; set; }
 		public Role Role { get; set; }
-		public List<Tour> Tours { get; set; } = new List<Tour>();
+		public List<Claim> Claimes { get; set; } = new List<Claim>();
 	}
 }

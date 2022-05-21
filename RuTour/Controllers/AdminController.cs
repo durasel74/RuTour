@@ -21,9 +21,9 @@ namespace RuTour.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "admin")]
-		public IActionResult AddCity(string? city_name, string? country)
+		public IActionResult AddCity(string? city_name, string? country_name)
 		{
-			if (city_name == null || country == null)
+			if (city_name == null || country_name == null)
 				return RedirectToAction("User", "Account");
 
 			var city = db.Cities.FirstOrDefault(c => c.Name == city_name);
@@ -32,7 +32,7 @@ namespace RuTour.Controllers
 				city = new City
 				{
 					Name = city_name,
-					Country = db.Countries.First(c => c.Name == country),
+					Country = db.Countries.First(c => c.Name == country_name),
 				};
 				db.Cities.Add(city);
 				db.SaveChanges();
@@ -92,7 +92,7 @@ namespace RuTour.Controllers
 		[Authorize(Roles = "admin")]
 		public IActionResult AddTour(string? tour_title, string? company, string? city,
 			string? accomodation, DateTime? date, decimal? cost, int? nights_count,
-			int? tickets_count, string? transport, string? return_, string? description)
+			int? tickets_count, string? transport, string? return_, string? tour_description)
 		{
 			if (tour_title == null || company == null || city == null
 				|| date == null || cost == null || nights_count == null || tickets_count == null
@@ -114,7 +114,7 @@ namespace RuTour.Controllers
 					MaxTicketNumber = tickets_count.GetValueOrDefault(),
 					Transport = Transport.None.ToTransport(transport),
 					Return = return_ == "Есть",
-					Description = description ?? "",
+					Description = tour_description ?? "",
 				};
 				db.Tours.Add(tour);
 				db.SaveChanges();

@@ -15,6 +15,7 @@ namespace RuTour.Models
 		public DbSet<Accommodation> Accommodations { get; set; }
 		public DbSet<Tour> Tours { get; set; }
 		public DbSet<Role> Roles { get; set; }
+		public DbSet<Claim> Claimes { get; set; }
 
 		public List<String> Transports
 		{
@@ -40,6 +41,8 @@ namespace RuTour.Models
 			if (!this.Countries.Any()) AddDefaultCountries();
 			if (!this.Roles.Any()) AddRoles();
 			if (!this.Users.Any()) AddAdmin();
+			if (!this.Cities.Any()) AddDefaultCities();
+
 			//if (!this.Countries.Any() && !this.Cities.Any()
 			//	&& !this.Companies.Any() && !this.Accommodations.Any()
 			//	&& !this.Tours.Any())
@@ -52,6 +55,11 @@ namespace RuTour.Models
 		public void ClearSearchList()
 		{
 			SearchList = this.Tours.Include(t => t.Company).Include(t => t.City).ToList();
+		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Claim>().HasKey(u => new { u.TourId, u.UserId});
 		}
 
 		private void AddRoles()
@@ -67,6 +75,7 @@ namespace RuTour.Models
 		{
 			var country1 = new Country { Name = "Россия" };
 			var country2 = new Country { Name = "Турция" };
+			
 			Countries.AddRange(country1, country2);
 			this.SaveChanges();
 		}
@@ -80,6 +89,18 @@ namespace RuTour.Models
 				Role = Roles.First(r => r.Name == "admin"),
 			};
 			Users.AddRange(admin);
+			this.SaveChanges();
+		}
+
+		private void AddDefaultCities()
+		{
+			var defaultCountry = Countries.First(c => c.Name == "Россия");
+			var city1 = new City { Name = "Москва", Country = defaultCountry };
+			var city2 = new City { Name = "Екатеринбург", Country = defaultCountry };
+			var city3 = new City { Name = "Санкт-Петербург", Country = defaultCountry };
+			var city4 = new City { Name = "Анапа", Country = defaultCountry };
+			var city5 = new City { Name = "Челябинск", Country = defaultCountry };
+			Cities.AddRange(city1, city2, city3, city4, city5);
 			this.SaveChanges();
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RuTour.Models
 {
@@ -24,11 +25,25 @@ namespace RuTour.Models
 		public int? AccommodationId { get; set; }
 		public Accommodation Accommodation { get; set; }
 
-		public List<User> Users { get; set; } = new List<User>();
+		public List<Claim> Claimes { get; set; } = new List<Claim>();
 
+		[NotMapped]
+		public List<Claim> NoAcceptedClaimes { get { return Claimes.Where(c => c.Accepted == false).ToList(); } }
+
+		[NotMapped]
+		public List<Claim> AcceptedClaimes { get { return Claimes.Where(c => c.Accepted == true).ToList(); } }
 
 		public string TransportString { get { return Transport.ToStringRu(); } }
 		public string ReturnString { get { return Return ? "Есть" : "Нет"; } }
-		public int TicketsLeft { get { return MaxTicketNumber - Users.Count; } }
+		public int TicketsLeft
+		{
+			get
+			{
+				int bookedClimes = 0;
+				foreach (var claim in Claimes)
+					bookedClimes += claim.Count;
+				return MaxTicketNumber - bookedClimes;
+			}
+		}
 	}
 }

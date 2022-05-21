@@ -34,7 +34,7 @@
 
             <!-- Список туров -->
             <div class="container-fluid" style="margin-top: 40px">
-                @if (Model.Tours != null && Model.Tours.Count > 0)
+                @if (Model.Claimes != null && Model.Claimes.Count > 0)
                 {
                     <!-- Сортировка -->
                     <div class="recent_joblist_wrap">
@@ -60,8 +60,10 @@
                     <!-- Туры -->
                     <div class="job_lists m-0">
                         <div class="row">
-                            @foreach (var element in Model.Tours)
+                            @foreach (var claim in Model.Claimes)
                             {
+                                var element = claim.Tour;
+
                                 <div class="col-lg-12 col-md-12">
                                     <div class="single_jobs white-bg d-flex justify-content-between">
                                         <div class="jobs_left d-flex align-items-center">

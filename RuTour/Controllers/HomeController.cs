@@ -54,7 +54,10 @@ namespace RuTour.Controllers
 		public IActionResult Tour(int? id)
 		{
 			if (id == null) return RedirectToAction("Index");
-			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).Include(t => t.Accommodation).FirstOrDefault(tour => tour.Id == id);
+			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).Include(t => t.Accommodation)
+				.Include(t => t.Claimes).ThenInclude(u => u.User).FirstOrDefault(tour => tour.Id == id);
+			ViewBag.Role = GetRole();
+			ViewBag.CompanyLogin = HttpContext.User.Identity.Name;
 			return View(tour);
 		}
 
@@ -70,6 +73,17 @@ namespace RuTour.Controllers
 		public IActionResult About()
 		{
 			return View();
+		}
+
+		public string GetRole()
+		{
+			if (HttpContext.User.IsInRole("admin"))
+				return "admin";
+			else if (HttpContext.User.IsInRole("user"))
+				return "user";
+			else if (HttpContext.User.IsInRole("company"))
+				return "company";
+			else return "";
 		}
 	}
 }
