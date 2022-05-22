@@ -11204,13 +11204,3 @@ h6 {
     margin: auto;
     z-index: 11;
 }
-
-.custom-checkbox {
-    display: inline-block;
-    align-items: center;
-    user-select: none;
-
-    content: 'OK';
-    border: 1px solid #adb5bd;
-    border-radius: 10px;
-}

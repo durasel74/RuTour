@@ -40,7 +40,7 @@ namespace RuTour.Models
 			get
 			{
 				int bookedClimes = 0;
-				foreach (var claim in Claimes)
+				foreach (var claim in AcceptedClaimes)
 					bookedClimes += claim.Count;
 				return MaxTicketNumber - bookedClimes;
 			}

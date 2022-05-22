@@ -96,26 +96,49 @@
                                             </div>
                                         </div>
                                         <div class="jobs_right">
-                                            <div>
-                                                @*<input style="width: 50px; height: 50px" class="custom-checkbox"
-                                                type="checkbox" name="accepted" value="yes">*@
-                                                <a href="#main_@element.Id" class="boxed-btn2"
-                                                style="padding-left: 11px; height: 50px; line-height: 20px; width: 50px; font-size: 50px">x</a>
+                                            <h4>Количество билетов: <span>@claim.Count</span></h4>
+                                            <h4 style="margin-top: 15px">Полная стоимость: <span>@claim.TotalCost</span> руб.</h4>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div style="height: 50px">
+                                                <a href="#accept_@element.Id" class="boxed-btn3"
+                                                style="padding-left: 8px; height: 50px; line-height: 20px; padding-top: 15px;
+                                                width: 50px; font-size: 40px; margin-right: 10px">✔</a>
+
+                                                <a href="#del_@element.Id" class="boxed-btn2"
+                                                style="padding-left: 11px; height: 50px; line-height: 20px;
+                                                width: 50px; font-size: 50px">x</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Подтверждение заявки -->
+                                <div id="accept_@element.Id" class="modal_field">
+                                    <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
+                                        <p>Вы действительно хотите подтвердить эту заявку?</p>
+                                        <div>
+                                            <form action="~/Account/AcceptUserClime" method="post">
+                                                <input style="display: none" name="tour_id" value="@Model.Id"/>
+                                                <button class="boxed-btn3" type="submit" name="user_id" value="@element.Id"
+                                                style="font-size: 16px; width: 150px; margin: 10px; height: 48px; line-height: 20px">Подтвердить</button>
+                                                <a href="#" class="boxed-btn"
+                                                style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Подтверждение удаления -->
-                                <div id="main_@element.Id" class="modal_field">
+                                <div id="del_@element.Id" class="modal_field">
                                     <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
                                         <p>Вы действительно хотите удалить эту заявку?</p>
                                         <div>
                                             <form action="~/Account/DeleteUserClime" method="post">
                                                 <input style="display: none" name="tour_id" value="@Model.Id"/>
                                                 <button class="boxed-btn2" type="submit" name="user_id" value="@element.Id"
-                                                style="font-size: 16px; color: #FFF; width: 150px; margin: 10px">Удалить</button>
-                                                <a href="#" class="boxed-btn" 
+                                                style="color: #FFF; font-size: 16px; width: 150px; margin: 10px">Удалить</button>
+                                                <a href="#" class="boxed-btn"
                                                 style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
                                             </form>
                                         </div>
@@ -157,27 +180,29 @@
                                             </div>
                                         </div>
                                         <div class="jobs_right">
-                                            <div class="apply_now">
-                                                <a href="#main_@element.Id" class="boxed-btn2"
-                                                style="padding-left: 11px; height: 50px; line-height: 20px; width: 50px; font-size: 50px">x</a>
-                                            </div>
-                                            <div class="apply_now">
-
+                                            <h4>Количество билетов: <span>@claim.Count</span></h4>
+                                            <h4 style="margin-top: 15px">Полная стоимость: <span>@claim.TotalCost</span> руб.</h4>
+                                        </div>
+                                        <div class="jobs_right">
+                                            <div style="height: 50px">
+                                                <a href="#deaccept_@element.Id" class="boxed-btn2"
+                                                style="padding-left: 11px; height: 50px; line-height: 20px;
+                                                width: 50px; font-size: 50px">x</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Подтверждение удаления -->
-                                <div id="main_@element.Id" class="modal_field">
+                                <!-- Подтверждение отмены заявки -->
+                                <div id="deaccept_@element.Id" class="modal_field">
                                     <div class="delete_dialog descript_wrap white-bg" style="border-radius: 15px; padding: 50px">
-                                        <p>Вы действительно хотите удалить эту заявку?</p>
+                                        <p>Вы действительно хотите отменить эту заявку?</p>
                                         <div>
-                                            <form action="~/Account/DeleteUserClime" method="post">
+                                            <form action="~/Account/DeacceptUserClime" method="post">
                                                 <input style="display: none" name="tour_id" value="@Model.Id"/>
                                                 <button class="boxed-btn2" type="submit" name="user_id" value="@element.Id"
-                                                style="font-size: 16px; color: #FFF; width: 150px; margin: 10px">Удалить</button>
-                                                <a href="#" class="boxed-btn" 
+                                                style="color: #FFF; font-size: 16px; width: 150px; margin: 10px; padding-left: 22px">Подтвердить</button>
+                                                <a href="#" class="boxed-btn"
                                                 style="font-size: 16px; width: 150px; margin: 10px; border-radius: 5px; padding: 11px">Назад</a>
                                             </form>
                                         </div>

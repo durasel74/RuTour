@@ -227,20 +227,6 @@ namespace RuTour.Controllers
             return RedirectToAction("CompanyAccount", "Account");
         }
 
-        [HttpPost]
-        [Authorize(Roles = "company")]
-        public IActionResult DeleteUserClime(int? tour_id, int? user_id)
-        {
-            Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
-                .FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
-            if (claim != null)
-			{
-                db.Claimes.Remove(claim);
-                db.SaveChanges();
-			}
-            return RedirectToAction("Tour", "Home", new { id = tour_id });
-        }
-
 		[Authorize(Roles = "user")]
 		public IActionResult ClimeTour(int? id, int? count)
 		{
@@ -260,7 +246,49 @@ namespace RuTour.Controllers
 			return RedirectToAction("Tour", "Home", new { id = id });
 		}
 
-        private async Task Authenticate(string userName)
+		[HttpPost]
+		[Authorize(Roles = "company")]
+		public IActionResult AcceptUserClime(int? tour_id, int? user_id)
+		{
+			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
+			if (claim != null)
+			{
+                claim.Accepted = true;
+				db.SaveChanges();
+			}
+			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "company")]
+		public IActionResult DeacceptUserClime(int? tour_id, int? user_id)
+		{
+			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
+			if (claim != null)
+			{
+				claim.Accepted = false;
+				db.SaveChanges();
+			}
+			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "company")]
+		public IActionResult DeleteUserClime(int? tour_id, int? user_id)
+		{
+			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
+			if (claim != null)
+			{
+				db.Claimes.Remove(claim);
+				db.SaveChanges();
+			}
+			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
+		private async Task Authenticate(string userName)
         {
             User user = db.Users.Include(u => u.Role). FirstOrDefault(u => u.Email == userName);
             if (user is null) return;
