@@ -41,7 +41,7 @@
                         <div class="recent_joblist white-bg" style="background-color: transparent;">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <h4 style="font-size: 30px; margin-left: -20px;">Приобретенные туры</h4>
+                                    <h4 style="font-size: 30px; margin-left: -20px;">Заявки на туры</h4>
                                 </div>
                                 @*<div class="col-md-6" style="margin-bottom: -20px;">
                                     <div class="serch_cat d-flex justify-content-end" style="margin-right: -20px;">
@@ -85,11 +85,23 @@
                                             </div>
                                         </div>
                                         <div class="jobs_right">
+                                            @if (!claim.Accepted)
+                                            {
+                                                <h4 style="padding: 5px; text-align: center; line-height: 30px; margin-top: 15px;
+                                                color: #222; background-color: #FFCC66">Заявка на рассмотрении</h4>
+                                            }
+                                            else
+                                            {
+                                                <h4 style="padding: 5px; text-align: center; line-height: 30px; margin-top: 15px;
+                                                color: #222; background-color: #00FF66">Заявка принята</h4>
+                                            }
+                                        </div>
+                                        <div class="jobs_right">
                                             <div class="apply_now">
                                                 <a href="~/Home/Tour/@element.Id" class="boxed-btn3" style="font-size: 20px;">Узнать больше</a>
                                             </div>
                                             <div class="date">
-                                                <p style="font-size: 16px;">Стоимость @element.Cost руб</p>
+                                                <p style="font-size: 16px;">Стоимость @claim.TotalCost руб</p>
                                             </div>
                                         </div>
                                     </div>

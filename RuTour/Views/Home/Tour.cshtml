@@ -6,6 +6,7 @@
 <div class="job_details_area" style="margin-top: 70px;">
     <div class="container">
         <div class="row">
+            <!-- Основная информация о туре -->
             <div class="col-lg-8">
                 <div class="descript_wrap white-bg" style="border-radius: 10px;">
                     <a class="company_link" href="~/Home/Index">
@@ -22,6 +23,7 @@
                 </div>
             </div>
 
+            <!-- Детали тура -->
             <div class="col-lg-4">
                 <div class="job_sumary" style="border-radius: 10px;">
                     <div class="summery_header">
@@ -39,22 +41,52 @@
                             <li style="color: #555">Стоимость: <span id="ticket_cost">@Model.Cost</span> руб.</li>
                         </ul>
                     </div>
+
+                    <!-- Кнопки для простого пользователя -->
                     @if (ViewBag.Role == "user")
                     {
-                        <hr style="margin-top: -10px"/>
-                        <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
-                            <form action="~/Account/ClimeTour" method="post">
-                                <div style="margin: -20px auto 20px">
-                                  <input style="display: none" id="ticket_left" value="@Model.TicketsLeft">
-                                  <input type="button" value="-" id="button_minus">
-                                  <input style="width: 50px" id="num_count" name="count" type="number" min="1" value="1" readonly>
-                                  <input type="button" value="+" id="button_plus">
-                                </div>
-                                <h4 style="margin-bottom: 15px; margin-top: -10px; color: #555;">Итог: <span id="total_cost">@Model.Cost</span> руб.</h4>
-                                <input style="display: none" name="id" value="@Model.Id">
-                                <input type="submit" class="boxed-btn3 w-100" style="line-height: 45px; font-size: 22px;" value="Оставить заявку">
-                            </form>
-                        </div>
+                        @if (ViewBag.Claim == null)
+                        {
+                            <hr style="margin-top: -10px"/>
+                            <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
+                                <form action="~/Account/ClimeTour" method="post">
+                                    <div style="margin: -20px auto 20px">
+                                      <input style="display: none" id="ticket_left" value="@Model.TicketsLeft">
+                                      <input type="button" value="-" id="button_minus">
+                                      <input style="width: 50px" id="num_count" name="count" type="number" min="1" value="1" readonly>
+                                      <input type="button" value="+" id="button_plus">
+                                    </div>
+                                    <h4 style="margin-bottom: 15px; margin-top: -10px; color: #555;">Итог: <span id="total_cost">@Model.Cost</span> руб.</h4>
+                                    <input style="display: none" name="id" value="@Model.Id">
+                                    <input type="submit" class="boxed-btn3 w-100" style="line-height: 45px; font-size: 22px;" value="Оставить заявку">
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <hr style="margin-top: -10px"/>
+                            <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
+                                <form action="~/Account/DeleteClime" method="post">
+                                    @if (!ViewBag.Claim.Accepted)
+                                    {
+                                       <h4 style="margin-bottom: 30px; margin-top: -15px; padding: 5px; 
+                                        text-align: center; color: #222; background-color: #FFCC66">Заявка на рассмотрении</h4> 
+                                    }
+                                    else
+                                    {
+                                        <h4 style="margin-bottom: 30px; margin-top: -15px; padding: 5px; 
+                                        text-align: center; color: #222; background-color: #00FF66">Заявка принята</h4>
+                                    }
+                                    <h4 style="margin-bottom: 15px; margin-top: -10px; color: #555; font-size: 16px">
+                                        Количество билетов: <span id="total_cost">@ViewBag.Claim.Count</span></h4>
+                                    <h4 style="margin-bottom: 15px; margin-top: -10px; color: #555; font-size: 16px">
+                                        Итоговая сумма: <span id="total_cost">@ViewBag.Claim.TotalCost</span> руб.</h4>
+
+                                    <input style="display: none" name="tour_id" value="@Model.Id">
+                                    <input type="submit" class="boxed-btn2 w-100" style="line-height: 45px; font-size: 22px;" value="Отменить заявку">
+                                </form>
+                            </div>
+                        }
                     }
                 </div>
             </div>

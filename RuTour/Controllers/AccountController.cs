@@ -288,6 +288,23 @@ namespace RuTour.Controllers
 			return RedirectToAction("Tour", "Home", new { id = tour_id });
 		}
 
+		[HttpPost]
+		[Authorize(Roles = "user")]
+		public IActionResult DeleteClime(int? tour_id)
+		{
+			var userName = HttpContext.User.Identity.Name;
+			User user = db.Users.FirstOrDefault(u => u.Email == userName);
+
+			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user.Id);
+			if (claim != null)
+			{
+				db.Claimes.Remove(claim);
+				db.SaveChanges();
+			}
+			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
 		private async Task Authenticate(string userName)
         {
             User user = db.Users.Include(u => u.Role). FirstOrDefault(u => u.Email == userName);

@@ -58,6 +58,14 @@ namespace RuTour.Controllers
 				.Include(t => t.Claimes).ThenInclude(u => u.User).FirstOrDefault(tour => tour.Id == id);
 			ViewBag.Role = GetRole();
 			ViewBag.CompanyLogin = HttpContext.User.Identity.Name;
+
+			var user = db.Users.FirstOrDefault(user => user.Email == HttpContext.User.Identity.Name);
+			if (user != null)
+			{
+				Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
+					.FirstOrDefault(c => c.Tour.Id == tour.Id && c.User.Id == user.Id);
+				ViewBag.Claim = claim;
+			}
 			return View(tour);
 		}
 
