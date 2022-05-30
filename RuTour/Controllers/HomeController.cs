@@ -16,6 +16,7 @@ namespace RuTour.Controllers
 
 		public IActionResult Index()
 		{
+			ViewBag.User = GetCurrentUser();
 			return View(db);
 		}
 
@@ -47,6 +48,7 @@ namespace RuTour.Controllers
 				int maxCost = int.Parse(Regex.Replace(splitedCost[1], @"[^\d]+", ""));
 				db.SearchList = db.SearchList.Where(t => t.Cost >= minCost && t.Cost <= maxCost).ToList();
 			}
+			ViewBag.User = GetCurrentUser();
 			return View(db);
 		}
 
@@ -66,6 +68,7 @@ namespace RuTour.Controllers
 					.FirstOrDefault(c => c.Tour.Id == tour.Id && c.User.Id == user.Id);
 				ViewBag.Claim = claim;
 			}
+			ViewBag.User = GetCurrentUser();
 			return View(tour);
 		}
 
@@ -74,12 +77,14 @@ namespace RuTour.Controllers
 		{
 			if (id == null) return RedirectToAction("Index");
 			var company = db.Companies.Include(c => c.Tours).ThenInclude(t => t.City).FirstOrDefault(compnay => compnay.Id == id);
+			ViewBag.User = GetCurrentUser();
 			return View(company);
 		}
 
 		[HttpGet]
 		public IActionResult About()
 		{
+			ViewBag.User = GetCurrentUser();
 			return View();
 		}
 
@@ -92,6 +97,12 @@ namespace RuTour.Controllers
 			else if (HttpContext.User.IsInRole("company"))
 				return "company";
 			else return "";
+		}
+
+		public User GetCurrentUser()
+        {
+			var userName = HttpContext.User.Identity.Name;
+			return db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
 		}
 	}
 }

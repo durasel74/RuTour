@@ -38,11 +38,11 @@
                             <li style="color: #555">Обратный билет: <span>@Model.ReturnString</span></li>
                             <li style="color: #555">Место проживания: <span>@(Model.Accommodation?.Name ?? "Нет")</span></li>
                             <li style="color: #555">Осталось мест: <span>@Model.TicketsLeft</span></li>
-                            <li style="color: #555">Стоимость: <span id="ticket_cost">@Model.Cost</span> руб.</li>
+                            <li style="color: #555">Стоимость одного билета: <span id="ticket_cost">@Model.Cost</span> руб.</li>
                         </ul>
                     </div>
 
-                    <!-- Кнопки для простого пользователя -->
+                    <!-- Кнопки для заявок -->
                     @if (ViewBag.Role == "user")
                     {
                         @if (ViewBag.Claim == null)
@@ -87,6 +87,13 @@
                                 </form>
                             </div>
                         }
+                    }
+                    else if (ViewBag.Role == "")
+                    {
+                        <hr style="margin-top: -10px"/>
+                        <div class="job_content" style="margin-top: -10px; list-style: none; list-style-type: none;">
+                            <a class="boxed-btn3 w-100" style="line-height: 45px; font-size: 22px;" href="~/Account/Login">Войти</a>
+                        </div>
                     }
                 </div>
             </div>

@@ -129,10 +129,9 @@ namespace RuTour.Controllers
         [Authorize]
         public IActionResult User()
         {
-            var userName = HttpContext.User.Identity.Name;
-            User user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
 
-            if (user == null) return RedirectToAction("Login", "Account");
             switch (user.Role.Name)
             {
                 case "admin":
@@ -163,7 +162,8 @@ namespace RuTour.Controllers
             User user = GetCurrentUserByRole("user");
             if (user == null) return RedirectToAction("Login", "Account");
             user.DB = db;
-            return View(user);
+			ViewBag.User = user;
+			return View(user);
         }
 
         [HttpGet]
@@ -221,6 +221,11 @@ namespace RuTour.Controllers
             Tour tour = db.Tours.FirstOrDefault(t => t.Id == id);
             if (tour != null)
             {
+                foreach (var claim in tour.Claimes)
+                {
+                    if (claim.Accepted)
+                        claim.User.Cash += claim.TotalCost;
+				}
                 db.Tours.Remove(tour);
                 db.SaveChanges();
             }
@@ -232,17 +237,21 @@ namespace RuTour.Controllers
 		{
 			if (id == null || count == null) return RedirectToAction("Index", "Home");
 			var tour = db.Tours.FirstOrDefault(t => t.Id == id);
-			var userName = HttpContext.User.Identity.Name;
-			User user = db.Users.FirstOrDefault(u => u.Email == userName);
+			User user = GetCurrentUser();
 
-            var newClaim = new Models.Claim {
+			var newClaim = new Models.Claim {
                 Tour = tour,
                 User = user,
                 Count = count.Value,
                 Accepted = false
             };
-			user?.Claimes?.Add(newClaim);
-			db.SaveChanges();
+
+            if (user?.Cash >= newClaim.TotalCost)
+            {
+				user?.Claimes?.Add(newClaim);
+				db.SaveChanges();
+			}
+			ViewBag.User = user;
 			return RedirectToAction("Tour", "Home", new { id = id });
 		}
 
@@ -255,6 +264,7 @@ namespace RuTour.Controllers
 			if (claim != null)
 			{
                 claim.Accepted = true;
+                claim.User.Cash -= claim.TotalCost;
 				db.SaveChanges();
 			}
 			return RedirectToAction("Tour", "Home", new { id = tour_id });
@@ -269,6 +279,7 @@ namespace RuTour.Controllers
 			if (claim != null)
 			{
 				claim.Accepted = false;
+				claim.User.Cash += claim.TotalCost;
 				db.SaveChanges();
 			}
 			return RedirectToAction("Tour", "Home", new { id = tour_id });
@@ -292,17 +303,40 @@ namespace RuTour.Controllers
 		[Authorize(Roles = "user")]
 		public IActionResult DeleteClime(int? tour_id)
 		{
-			var userName = HttpContext.User.Identity.Name;
-			User user = db.Users.FirstOrDefault(u => u.Email == userName);
+			User user = GetCurrentUser();
 
 			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
 				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user.Id);
 			if (claim != null)
 			{
 				db.Claimes.Remove(claim);
+                if (claim.Accepted) claim.User.Cash += claim.TotalCost;
 				db.SaveChanges();
 			}
+			ViewBag.User = user;
 			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
+		[HttpGet]
+		[Authorize(Roles = "user")]
+		public IActionResult TopUp()
+		{
+			User user = GetCurrentUser();
+			ViewBag.User = user;
+			return View(user);
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "user")]
+		public IActionResult TopUp(decimal? cash)
+		{
+            if (cash == null) return RedirectToAction("TopUp", "Account");
+			User user = GetCurrentUser();
+
+			user.Cash += cash.Value;
+            db.SaveChanges();
+			ViewBag.User = user;
+			return RedirectToAction("TopUp", "Account");
 		}
 
 		private async Task Authenticate(string userName)
@@ -329,5 +363,11 @@ namespace RuTour.Controllers
             if (user == null || user.Role.Name != role) return null;
             else return user;
         }
-    }
+
+		public User GetCurrentUser()
+		{
+			var userName = HttpContext.User.Identity.Name;
+			return db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == userName);
+		}
+	}
 }

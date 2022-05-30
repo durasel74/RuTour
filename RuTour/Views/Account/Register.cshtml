@@ -14,17 +14,18 @@
                         <div style="color: red" class="validation" asp-validation-summary="ModelOnly"></div>
                         <div>
                             <div class="form-group">
-                                <input type="text" asp-for="Email" placeholder="Email" 
-                                style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
+                                <input type="text" asp-for="Email" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="Email" required
+                                style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; 
+                                padding: 0 10px; width: 100%; text-transform: lowercase"/>
                                 <span asp-validation-for="Email" />
                             </div>
                             <div class="form-group">
-                                <input type="password" asp-for="Password" placeholder="Пароль" 
+                                <input type="password" asp-for="Password" pattern=".{8,255}" placeholder="Пароль" required
                                 style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
                                 <span asp-validation-for="Password"/>
                             </div>
                             <div class="form-group">
-                                <input type="password" asp-for="ConfirmPassword" placeholder="Повторите пароль" 
+                                <input type="password" asp-for="ConfirmPassword" pattern=".{8,255}" placeholder="Повторите пароль" required
                                 style="border-radius: 5px; border: 1px solid #888; height: 42px; padding: 5px; padding: 0 10px; width: 100%"/>
                                 <span asp-validation-for="ConfirmPassword"/>
                             </div>
