@@ -34,12 +34,12 @@
                             <form action="~/Account/AddTour" method="post" style="display: flex; flex-wrap: wrap;">
                                 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="tour_title" type="text" placeholder="Название тура" onfocus="this.value=''" 
+                                    <input name="tour_title" type="text" placeholder="Название тура" onfocus="this.value=''" pattern=".{3,35}" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 300px">
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="city" type="text" list="cities" placeholder="Город" onfocus="this.value='';" onchange="this.blur()"
+                                    <input name="city" type="text" list="cities" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 250px"/>
                                     <datalist id="cities">
                                         @foreach (var element in Model.DB.Cities)
@@ -50,12 +50,12 @@
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="date" type="date" placeholder="Дата"
+                                    <input name="date" type="date" placeholder="Дата" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px">
                                 </div>
                                 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="accomodation" type="text" list="accomodations" placeholder="Место проживания" onfocus="this.value='';" 
+                                    <input name="accomodation" type="text" list="accomodations" placeholder="Место проживания" onfocus="this.value='';" required
                                     onchange="this.blur()" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 260px"/>
                                     <datalist id="accomodations">
                                         @foreach (var element in Model.DB.Accommodations)
@@ -66,13 +66,13 @@
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="nights_count" type="number" min="0" step="1" placeholder="Количество ночей"
+                                    <input name="nights_count" type="number" min="0" step="1" placeholder="Количество ночей" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 160px"/>
                                 </div>
                                 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="transport" type="text" list="transport" placeholder="Транспорт" onfocus="this.value='';" onchange="this.blur()"
-                                    style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px"/>
+                                    <input name="transport" type="text" list="transport" placeholder="Транспорт" onfocus="this.value='';" required
+                                    onchange="this.blur()" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px"/>
                                     <datalist id="transport">
                                         @foreach (var element in Model.DB.Transports)
                                         {
@@ -82,8 +82,8 @@
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="return_" id="return_input" type="text" list="return-list" onfocus="this.value='';" onchange="this.blur()" placeholder="Билет обратно"
-                                    style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px"/>
+                                    <input name="return_" id="return_input" type="text" list="return-list" onfocus="this.value='';" required
+                                    onchange="this.blur()" placeholder="Билет обратно" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px"/>
                                     <datalist id="return-list">
                                         <option>Нет</option>
                                         <option>Есть</option>
@@ -91,12 +91,12 @@
                                 </div>
 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="tickets_count" type="number" min="1" step="1" placeholder="Количество билетов"
+                                    <input name="tickets_count" type="number" min="1" step="1" placeholder="Количество билетов" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 215px"/>
                                 </div>
                                 
                                 <div class="single_field" style="margin: 10px">
-                                    <input name="cost" type="number" min="0" step="Any" placeholder="Стоимость"
+                                    <input name="cost" type="number" min="0" step="Any" placeholder="Стоимость" required
                                     style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 160px"/>
                                 </div>
                                 

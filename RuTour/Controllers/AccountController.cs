@@ -164,7 +164,7 @@ namespace RuTour.Controllers
             user.DB = db;
 			ViewBag.User = user;
 			return View(user);
-        }
+		}
 
         [HttpGet]
         [Authorize(Roles = "company")]
@@ -186,7 +186,7 @@ namespace RuTour.Controllers
         {
             if (tour_title == null || city == null || date == null || cost == null || nights_count == null
                 || tickets_count == null || transport == null || return_ == null)
-                return RedirectToAction("User", "Account");
+				return RedirectToAction("User", "Account");
 
             var userName = HttpContext.User.Identity.Name;
             Company company = db.Companies.First(u => u.Email == userName);
@@ -211,7 +211,7 @@ namespace RuTour.Controllers
                 db.Tours.Add(tour);
                 db.SaveChanges();
             }
-            return RedirectToAction("CompanyAccount", "Account");
+			return RedirectToAction("CompanyAccount", "Account");
         }
 
         [HttpPost]
@@ -261,7 +261,9 @@ namespace RuTour.Controllers
 		{
 			Models.Claim claim = db.Claimes.Include(c => c.Tour).Include(c => c.User)
 				.FirstOrDefault(c => c.Tour.Id == tour_id && c.User.Id == user_id);
-			if (claim != null)
+			var user = db.Users.Include(u => u.Role).FirstOrDefault(u => u.Id == user_id);
+
+			if (claim != null && user.Cash >= claim.TotalCost)
 			{
                 claim.Accepted = true;
                 claim.User.Cash -= claim.TotalCost;
@@ -315,6 +317,31 @@ namespace RuTour.Controllers
 			}
 			ViewBag.User = user;
 			return RedirectToAction("Tour", "Home", new { id = tour_id });
+		}
+
+		[HttpGet]
+		[Authorize(Roles = "user")]
+		public IActionResult UpdateUser()
+		{
+			return View(GetCurrentUser());
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "user")]
+		public IActionResult UpdateUser(string? email, string? phoneNumber, 
+            string? password, string? confirmPassword)
+		{
+			if (email == null || password == null || confirmPassword == null)
+				return RedirectToAction("UpdateUser", "Account");
+            if (password != confirmPassword)
+				return RedirectToAction("UpdateUser", "Account");
+
+			User user = GetCurrentUser();
+            user.Email = email;
+            user.PhoneNumber = phoneNumber;
+            user.Password = password;
+            db.SaveChanges();
+			return RedirectToAction("User", "Account");
 		}
 
 		[HttpGet]

@@ -1,0 +1,43 @@
+﻿@model RuTour.Models.User
+@{
+    ViewData["Title"] = "RuTour - редактирование пользователя";
+}
+
+<div class="job_details_area" style="margin-top: 70px;">
+    <div class="container">
+        <div class="row">
+            <div class="container-fluid col-lg-5">
+                <div class="descript_wrap white-bg" style="box-shadow: 3px 3px 6px 3px #777; border-radius: 15px; height: 500px">
+                    <h2 style="text-align: center; margin-bottom: 60px">Редактирование пользователя</h2>
+
+                    <form action="~/Account/UpdateUser" method="post" style="text-align: center">
+                        <div class="single_field" style="margin: 10px">
+                            <input type="text" name="email" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="Email" required
+                            value="@Model.Email" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 300px">
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input type="tel" name="phoneNumber" pattern=".{,12}" placeholder="Номер телефона"
+                            value="@Model.PhoneNumber" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 300px">
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input type="password" name="password" pattern=".{8,255}" placeholder="Пароль" required
+                            style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 300px">
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input type="password" name="confirmPassword" pattern=".{8,255}" placeholder="Повторите пароль" required
+                            style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 300px">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Сохранить" class="boxed-btn3 w-100" 
+                            style="margin-top: 30px; height: 50px; line-height: 23px; font-size: 16px;"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
