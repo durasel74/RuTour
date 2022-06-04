@@ -344,6 +344,43 @@ namespace RuTour.Controllers
 			return RedirectToAction("User", "Account");
 		}
 
+        [HttpGet]
+		[Authorize(Roles = "company")]
+		public IActionResult UpdateCompany()
+		{
+			var userName = HttpContext.User.Identity.Name;
+			Company company = db.Companies.First(u => u.Email == userName);
+			ViewBag.User = GetCurrentUser();
+			return View(company);
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "company")]
+		public IActionResult UpdateCompany(string? name, string? email, string? phoneNumber,
+			string? password, string? confirmPassword, string? description)
+		{
+			if (name == null || email == null || password == null || confirmPassword == null)
+				return RedirectToAction("UpdateUser", "Account");
+			if (password != confirmPassword)
+				return RedirectToAction("UpdateUser", "Account");
+
+            User user = GetCurrentUser();
+			user.Email = email;
+			user.PhoneNumber = phoneNumber;
+			user.Password = password;
+
+			var userName = HttpContext.User.Identity.Name;
+			Company company = db.Companies.First(u => u.Email == userName);
+            company.Name = name;
+            company.Email = email;
+            company.PhoneNumber = phoneNumber;
+            company.Description = description ?? "";
+			
+			db.SaveChanges();
+			ViewBag.User = user;
+			return RedirectToAction("User", "Account");
+		}
+
 		[HttpGet]
 		[Authorize(Roles = "user")]
 		public IActionResult TopUp()
