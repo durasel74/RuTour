@@ -382,6 +382,43 @@ namespace RuTour.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "company")]
+		public IActionResult UpdateTour(int? id)
+		{
+			if (id == null) return RedirectToAction("User", "Account");
+			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).Include(t => t.Accommodation)
+				.Include(t => t.Claimes).ThenInclude(u => u.User).FirstOrDefault(tour => tour.Id == id);
+            ViewBag.DB = db;
+			return View(tour);
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "company")]
+		public IActionResult UpdateTour(int? id, string? tour_title, string? city,
+			string? accomodation, DateTime? date, string? cost, int? nights_count,
+			int? tickets_count, string? transport, string? return_, string? description_field)
+		{
+			if (id == null || tour_title == null || city == null || date == null || cost == null 
+                || nights_count == null || tickets_count == null || transport == null || return_ == null)
+				return RedirectToAction("User", "Account");
+
+			var tour = db.Tours.Include(t => t.Company).Include(t => t.City).Include(t => t.Accommodation)
+				.Include(t => t.Claimes).ThenInclude(u => u.User).FirstOrDefault(tour => tour.Id == id);
+            tour.Title = tour_title;
+            tour.City = db.Cities.First(c => c.Name == city);
+            tour.Accommodation = db.Accommodations.FirstOrDefault(a => a.Name == accomodation);
+            tour.Date = date.GetValueOrDefault();
+            tour.Cost = Convert.ToDecimal(cost.Replace('.', ','));
+            tour.NightsCount = nights_count.GetValueOrDefault();
+            tour.MaxTicketNumber = tickets_count.GetValueOrDefault();
+            tour.Transport = Transport.None.ToTransport(transport);
+            tour.Return = return_ == "Есть";
+            tour.Description = description_field ?? "";
+			db.SaveChanges();
+			return RedirectToAction("User", "Account");
+		}
+
+		[HttpGet]
 		[Authorize(Roles = "user")]
 		public IActionResult TopUp()
 		{

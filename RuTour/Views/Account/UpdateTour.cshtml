@@ -1,0 +1,98 @@
+﻿@model RuTour.Models.Tour
+@{
+    ViewData["Title"] = "RuTour - редактирование тура";
+}
+
+<div class="job_details_area" style="margin-top: 70px;">
+    <div class="container">
+        <div class="row">
+            <div class="container-fluid col-lg-12">
+                <div class="descript_wrap white-bg" style="box-shadow: 3px 3px 6px 3px #777; border-radius: 15px; height: 600px">
+                    <h2 style="text-align: center; margin-bottom: 30px">Редактирование тура</h2>
+
+                    <form action="~/Account/UpdateTour" method="post" style="display: flex; flex-wrap: wrap; margin: -20px; margin-top: 0">
+                        <input style="display: none" name="id" value="@Model.Id"/>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="tour_title" type="text" placeholder="Название тура" pattern=".{3,35}" required
+                            value="@Model.Title" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 310px">
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="city" type="text" list="cities" placeholder="Город" onfocus="this.value='';" onchange="this.blur()" required
+                            value="@Model.City.Name" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 250px"/>
+                            <datalist id="cities">
+                                @foreach (var element in ViewBag.DB.Cities)
+                                {
+                                    <option>@element.Name</option>
+                                }
+                            </datalist>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="date" type="date" placeholder="Дата" required
+                            value="@Model.DateString" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px">
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="accomodation" type="text" list="accomodations" placeholder="Место проживания" onfocus="this.value='';"
+                            onchange="this.blur()" value="@Model.Accommodation?.Name"  style="padding: 5px; border-radius: 5px; border: 1px solid #888; 
+                            height: 42px; padding: 0 10px; width: 275px"/>
+                            <datalist id="accomodations">
+                                @foreach (var element in ViewBag.DB.Accommodations)
+                                {
+                                    <option>@element.Name</option>
+                                }
+                            </datalist>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="nights_count" type="number" min="0" step="1" placeholder="Количество ночей" value="@Model.NightsCount" required
+                            style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 160px"/>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="transport" type="text" list="transport" placeholder="Транспорт" onfocus="this.value='';" required
+                            value="@Model.TransportString" onchange="this.blur()" style="padding: 5px; border-radius: 5px; border: 1px solid #888; 
+                            height: 42px; padding: 0 10px"/>
+                            <datalist id="transport">
+                                @foreach (var element in ViewBag.DB.Transports)
+                                {
+                                    <option>@element</option>
+                                }
+                            </datalist>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="return_" id="return_input" type="text" list="return-list" onfocus="this.value='';" value="@Model.ReturnString" required
+                            onchange="this.blur()" placeholder="Билет обратно" style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px"/>
+                            <datalist id="return-list">
+                                <option>Нет</option>
+                                <option>Есть</option>
+                            </datalist>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="tickets_count" type="number" min="1" step="1" placeholder="Количество билетов" value="@Model.MaxTicketNumber" required 
+                            style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 215px"/>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px">
+                            <input name="cost" type="number" min="0" step="Any" placeholder="Стоимость" value="@Model.CostString" required
+                            style="padding: 5px; border-radius: 5px; border: 1px solid #888; height: 42px; padding: 0 10px; width: 160px"/>
+                        </div>
+
+                        <div class="single_field" style="margin: 10px; width: 100%">
+                            <textarea style="width: 100%; padding: 5px; font-size: 16px; resize: none" name="description_field"
+                            cols="30" rows="10" placeholder="Описание">@Model.Description</textarea>
+                        </div>
+                        
+                        <div style="margin: 10px; width: 100%">
+                            <button class="boxed-btn3 w-100" style="height: 50px; line-height: 25px;" type="submit">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

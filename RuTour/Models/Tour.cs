@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace RuTour.Models
 {
@@ -33,8 +34,10 @@ namespace RuTour.Models
 		[NotMapped]
 		public List<Claim> AcceptedClaimes { get { return Claimes.Where(c => c.Accepted == true).ToList(); } }
 
+		public string DateString { get { return Date.ToString("yyyy-MM-dd"); } }
 		public string TransportString { get { return Transport.ToStringRu(); } }
 		public string ReturnString { get { return Return ? "Есть" : "Нет"; } }
+		public string CostString { get { return Cost.ToString(CultureInfo.CreateSpecificCulture("en-GB")); } }
 		public int TicketsLeft
 		{
 			get
