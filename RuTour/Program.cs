@@ -1,9 +1,11 @@
 using System;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Localization;
 using RuTour.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,11 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseDeveloperExceptionPage();
 }
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+	DefaultRequestCulture = new RequestCulture("ru-RU"),
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
